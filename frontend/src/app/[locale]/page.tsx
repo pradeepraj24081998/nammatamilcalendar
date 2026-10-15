@@ -30,7 +30,7 @@ export async function generateMetadata({
     alternates: {
       canonical: `https://nammatamilcalendar.in/${locale}`,
       languages: {
-        ta: 'https://nammatamilcalendar.in/ta',
+        ta: 'https://nammatamilcalendar.in/ta',  
         en: 'https://nammatamilcalendar.in/en',
       },
     },
