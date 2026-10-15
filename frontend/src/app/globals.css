@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-page: #FFFBF5;
+    --bg-card: #FFFFFF;
+    --text-primary: #1F1517;
+    --text-muted: #5C5256;
+    --border-color: #EBDCCF;
+    --om-crimson: #8B1515;
+    --om-maroon: #981414;
+    --om-vermilion: #C93B2B;
+    --om-gold: #D4AF37;
+    --om-saffron: #E67E22;
+    --auspicious-green: #15803D;
+    --warning-red: #B91C1C;
+    --shadow-soft: 0 4px 20px -2px rgba(139, 21, 21, 0.08);
+  }
+
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Tamil', sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Authentic Tamil Calendar Sheet Frame */
+.calendar-sheet {
+  background: var(--bg-card);
+  border: 2px solid #E2D1C3;
+  box-shadow: 0 8px 30px rgba(139, 21, 21, 0.12);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  position: relative;
+}
+
+
+/* Agal Vilakku Oil Lamp Flame Animation */
+@keyframes flameFlicker {
+  0%, 100% {
+    transform: scale(1) rotate(-1deg);
+    opacity: 0.95;
+    filter: drop-shadow(0 0 8px rgba(245, 160, 20, 0.85));
+  }
+  25% {
+    transform: scale(1.05, 0.95) rotate(1.5deg);
+    opacity: 1;
+    filter: drop-shadow(0 0 12px rgba(255, 180, 40, 0.95));
+  }
+  50% {
+    transform: scale(0.96, 1.04) rotate(-0.5deg);
+    opacity: 0.92;
+    filter: drop-shadow(0 0 7px rgba(230, 140, 15, 0.8));
+  }
+  75% {
+    transform: scale(1.03, 0.97) rotate(1deg);
+    opacity: 0.98;
+    filter: drop-shadow(0 0 10px rgba(255, 190, 50, 0.9));
+  }
+}
+
+@keyframes lampHaloPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 0.75;
+  }
+}
+
+.agal-flame {
+  animation: flameFlicker 1.8s ease-in-out infinite;
+  transform-origin: 50% 90%;
+}
+
+.agal-halo {
+  animation: lampHaloPulse 2.4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agal-flame,
+  .agal-halo {
+    animation: none;
+  }
+}
