@@ -50,10 +50,12 @@ export default function RootLayout({
 }>) {
   const rawId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || 'ca-pub-8437641228559704';
   const adsenseClientId = rawId.startsWith('ca-') ? rawId : `ca-${rawId}`;
+  const gaId = process.env.NEXT_PUBLIC_GA_ID || 'G-M13SQ1FV69';
 
   return (
     <html lang="ta" suppressHydrationWarning>
       <head>
+        {/* Google AdSense */}
         <Script
           id="google-adsense"
           async
@@ -61,6 +63,22 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+
+        {/* Google Analytics 4 (GA4) */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gaId}', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
       </head>
       <body className="antialiased selection:bg-[#70263B] selection:text-white">
         {children}
