@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface AdContainerProps {
   slotName?: string;
@@ -9,25 +9,35 @@ interface AdContainerProps {
 }
 
 export const AdContainer: React.FC<AdContainerProps> = ({
+  slotName = 'Sponsored Advertisement',
   adSlotId,
 }) => {
-  const adsenseClientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
+  const rawId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || 'ca-pub-8437641228559704';
+  const adsenseClientId = rawId.startsWith('ca-') ? rawId : `ca-${rawId}`;
 
-  // If no AdSense ID is configured yet, do not render unwanted empty/dashed boxes
-  if (!adsenseClientId) {
-    return null;
-  }
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+      }
+    } catch {
+      // AdSense initialization safety catch
+    }
+  }, []);
 
   return (
-    <div className="w-full my-4 flex flex-col items-center justify-center overflow-hidden" aria-label="Sponsor Area">
+    <aside
+      aria-label={slotName}
+      className="w-full my-4 flex flex-col items-center justify-center overflow-hidden max-w-full"
+    >
       <ins
         className="adsbygoogle"
-        style={{ display: 'block', width: '100%' }}
+        style={{ display: 'block', width: '100%', textAlign: 'center' }}
         data-ad-client={adsenseClientId}
         data-ad-slot={adSlotId || '1234567890'}
         data-ad-format="auto"
         data-full-width-responsive="true"
       />
-    </div>
+    </aside>
   );
 };

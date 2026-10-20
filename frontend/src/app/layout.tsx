@@ -41,13 +41,27 @@ export const metadata: Metadata = {
   },
 };
 
+import Script from 'next/script';
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const rawId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || 'ca-pub-8437641228559704';
+  const adsenseClientId = rawId.startsWith('ca-') ? rawId : `ca-${rawId}`;
+
   return (
     <html lang="ta" suppressHydrationWarning>
+      <head>
+        <Script
+          id="google-adsense"
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+      </head>
       <body className="antialiased selection:bg-[#70263B] selection:text-white">
         {children}
       </body>
