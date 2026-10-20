@@ -85,11 +85,6 @@ export const Footer: React.FC<FooterProps> = ({ locale }) => {
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/feedback`} className="hover:text-[#70263B] dark:hover:text-[#DFBA73] transition-colors">
-                  {dict.feedback}
-                </Link>
-              </li>
-              <li>
                 <Link href={`/${locale}/privacy-policy`} className="hover:text-[#70263B] dark:hover:text-[#DFBA73] transition-colors">
                   {dict.privacy}
                 </Link>

@@ -31,13 +31,13 @@ export default async function LocaleLayout({
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen overflow-x-hidden max-w-full">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrgJSONLD) }}
       />
       <Header locale={locale} />
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <main className="flex-1 max-w-6xl w-full mx-auto px-2.5 xs:px-3 sm:px-6 lg:px-8 py-4 sm:py-8 overflow-x-hidden">
         {children}
       </main>
       <Footer locale={locale} />

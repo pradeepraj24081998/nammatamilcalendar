@@ -80,35 +80,54 @@ export const MonthGrid: React.FC<MonthGridProps> = ({ year, month, days, locale 
       <div className="bg-white border-2 border-[#EBDCCF] rounded-3xl p-4 sm:p-6 shadow-sm space-y-6">
         
         {/* Month Header Navigation (Crimson & Gold) */}
-        <div className="bg-gradient-to-r from-[#8B1515] via-[#981414] to-[#780F0F] text-white p-4 rounded-2xl flex items-center justify-between shadow-md">
-          <button
-            onClick={() => router.push(`/${locale}/calendar/month/${prevYear}/${prevMonth}`)}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white/15 hover:bg-[#FFD700] hover:text-[#780F0F] transition-all cursor-pointer"
-            aria-label="Previous Month"
-          >
-            <ChevronLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">{dict.prevDay.replace('நாள்', 'மாதம்')}</span>
-          </button>
+        <div className="bg-gradient-to-r from-[#8B1515] via-[#981414] to-[#780F0F] text-white p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md">
+          <div className="flex items-center justify-between w-full sm:w-auto space-x-2">
+            <button
+              onClick={() => router.push(`/${locale}/calendar/month/${prevYear}/${prevMonth}`)}
+              className="flex items-center space-x-1 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white/15 hover:bg-[#FFD700] hover:text-[#780F0F] transition-all cursor-pointer"
+              aria-label="Previous Month"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span className="hidden sm:inline">{dict.prevDay.replace('நாள்', 'மாதம்')}</span>
+            </button>
 
-          <div className="flex items-center space-x-2">
-            <AgalVilakkuIcon className="w-5 h-5 text-[#FFD700]" />
-            <h1 className="text-xl sm:text-3xl font-black text-white text-center">
-              {dict.months[month - 1]} <span className="text-[#FFD700]">{year}</span>
-            </h1>
+            <div className="flex items-center space-x-2">
+              <AgalVilakkuIcon className="w-5 h-5 text-[#FFD700]" />
+              <h1 className="text-xl sm:text-2xl font-black text-white text-center">
+                {dict.months[month - 1]} <span className="text-[#FFD700]">{year}</span>
+              </h1>
+            </div>
+
+            <button
+              onClick={() => router.push(`/${locale}/calendar/month/${nextYear}/${nextMonth}`)}
+              className="flex items-center space-x-1 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white/15 hover:bg-[#FFD700] hover:text-[#780F0F] transition-all cursor-pointer"
+              aria-label="Next Month"
+            >
+              <span className="hidden sm:inline">{dict.nextDay.replace('நாள்', 'மாதம்')}</span>
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
 
-          <button
-            onClick={() => router.push(`/${locale}/calendar/month/${nextYear}/${nextMonth}`)}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white/15 hover:bg-[#FFD700] hover:text-[#780F0F] transition-all cursor-pointer"
-            aria-label="Next Month"
-          >
-            <span className="hidden sm:inline">{dict.nextDay.replace('நாள்', 'மாதம்')}</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
+          {/* Quick Year Switcher (2026 | 2027) */}
+          <div className="flex items-center space-x-1.5 bg-black/25 p-1 rounded-xl border border-white/20">
+            {[2026, 2027].map((yr) => (
+              <button
+                key={yr}
+                onClick={() => router.push(`/${locale}/calendar/month/${yr}/${month}`)}
+                className={`px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                  year === yr
+                    ? 'bg-[#FFD700] text-[#780F0F] shadow-sm'
+                    : 'text-white/80 hover:bg-white/15 hover:text-white'
+                }`}
+              >
+                {yr}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Weekday Labels Header */}
-        <div className="grid grid-cols-7 gap-1 sm:gap-2 text-center text-xs font-black uppercase tracking-wider py-2 bg-[#FFFDF8] rounded-xl border border-[#EBDCCF]">
+        <div className="grid grid-cols-7 gap-1 sm:gap-2 text-center text-[10px] sm:text-xs font-black uppercase tracking-wider py-1.5 sm:py-2 bg-[#FFFDF8] rounded-xl border border-[#EBDCCF]">
           {dict.weekdays.map((w, idx) => (
             <div
               key={idx}
@@ -123,7 +142,7 @@ export const MonthGrid: React.FC<MonthGridProps> = ({ year, month, days, locale 
         <div className="grid grid-cols-7 gap-1 sm:gap-2">
           {gridCells.map((cell, idx) => {
             if (!cell) {
-              return <div key={`empty-${idx}`} className="h-20 sm:h-28 bg-transparent" />;
+              return <div key={`empty-${idx}`} className="h-16 xs:h-20 sm:h-24 md:h-28 bg-transparent" />;
             }
 
             const { dateStr, dayNum, data } = cell;
@@ -135,17 +154,17 @@ export const MonthGrid: React.FC<MonthGridProps> = ({ year, month, days, locale 
                 key={dateStr}
                 onClick={() => setSelectedDateStr(dateStr)}
                 type="button"
-                className={`h-20 sm:h-28 p-1.5 sm:p-2 rounded-2xl border-2 transition-all flex flex-col justify-between text-left group cursor-pointer relative ${
+                className={`h-16 xs:h-20 sm:h-24 md:h-28 p-1 sm:p-2 rounded-xl sm:rounded-2xl border-2 transition-all flex flex-col justify-between text-left group cursor-pointer relative overflow-hidden ${
                   isSelected
-                    ? 'bg-[#FFF8E7] border-[#8B1515] ring-3 ring-[#FFD700] shadow-lg scale-102 z-10'
+                    ? 'bg-[#FFF8E7] border-[#8B1515] ring-2 sm:ring-3 ring-[#FFD700] shadow-md z-10'
                     : isToday
                     ? 'bg-rose-50 border-[#8B1515] ring-2 ring-[#8B1515]/30 shadow-xs'
-                    : 'bg-[#FFFDF8] border-[#EBDCCF] hover:border-[#8B1515] hover:bg-[#FFFBF5] hover:shadow-md'
+                    : 'bg-[#FFFDF8] border-[#EBDCCF] hover:border-[#8B1515] hover:bg-[#FFFBF5] hover:shadow-xs'
                 }`}
               >
                 <div className="flex justify-between items-start w-full">
                   <span
-                    className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-xs sm:text-sm font-black ${
+                    className={`w-5 h-5 xs:w-6 xs:h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] xs:text-xs sm:text-sm font-black ${
                       isSelected
                         ? 'bg-[#8B1515] text-[#FFD700] shadow-sm'
                         : isToday
@@ -157,25 +176,33 @@ export const MonthGrid: React.FC<MonthGridProps> = ({ year, month, days, locale 
                   </span>
 
                   {data?.tamil_date ? (
-                    <span className="text-[10px] sm:text-xs font-extrabold text-[#C93B2B]">
+                    <span className="text-[9px] xs:text-[10px] sm:text-xs font-extrabold text-[#C93B2B]">
                       {data.tamil_date}
                     </span>
                   ) : null}
                 </div>
 
-                {/* Day Indicators */}
+                {/* Day Indicators (Responsive: Dots on mobile, badges on larger screens) */}
                 <div className="space-y-0.5 overflow-hidden w-full">
+                  {/* Muhurtham indicator */}
                   {data?.is_muhurtham && (
-                    <span className="inline-flex items-center space-x-0.5 text-[9px] font-black text-[#78350F] bg-[#FEF3C7] px-1 py-0.5 rounded truncate w-full border border-amber-300">
-                      <Sparkles className="w-2.5 h-2.5 shrink-0 text-amber-600" />
-                      <span className="truncate">முகூர்த்தம்</span>
-                    </span>
+                    <>
+                      <span className="hidden sm:inline-flex items-center space-x-0.5 text-[9px] font-black text-[#78350F] bg-[#FEF3C7] px-1 py-0.5 rounded truncate w-full border border-amber-300">
+                        <Sparkles className="w-2.5 h-2.5 shrink-0 text-amber-600" />
+                        <span className="truncate">முகூர்த்தம்</span>
+                      </span>
+                      <span className="inline-block sm:hidden w-2 h-2 rounded-full bg-amber-500 shadow-xs mr-1" title="சுப முகூர்த்தம்" />
+                    </>
                   )}
 
+                  {/* Festival indicator */}
                   {data?.festival_info && (
-                    <span className="block text-[9px] font-bold text-white bg-[#C93B2B] px-1 py-0.5 rounded truncate shadow-xs">
-                      {data.festival_info}
-                    </span>
+                    <>
+                      <span className="hidden sm:block text-[9px] font-bold text-white bg-[#C93B2B] px-1 py-0.5 rounded truncate shadow-xs">
+                        {data.festival_info}
+                      </span>
+                      <span className="inline-block sm:hidden w-2 h-2 rounded-full bg-rose-600 shadow-xs" title={data.festival_info} />
+                    </>
                   )}
                 </div>
               </button>

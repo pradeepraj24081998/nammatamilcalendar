@@ -37,6 +37,8 @@ export async function generateMetadata({
   };
 }
 
+import { QuickMonthGrid } from '@/components/calendar/QuickMonthGrid';
+
 export default async function HomePage({
   params,
 }: {
@@ -46,14 +48,17 @@ export default async function HomePage({
   const locale: Locale = resolvedParams.locale === 'en' ? 'en' : 'ta';
   const dict = getDictionary(locale);
 
-  // Fetch today's calendar data from Django API
+  // Fetch today's calendar data
   let dayData = await fetchTodayCalendar();
   if (!dayData) {
-    dayData = await fetchDayCalendar('2026-10-16');
+    dayData = await fetchDayCalendar('2026-10-20');
   }
 
   const upcomingFestivals = await fetchUpcomingFestivals();
   const currentDateStr = dayData?.date || new Date().toISOString().split('T')[0];
+  const dateParts = currentDateStr.split('-');
+  const currentYear = parseInt(dateParts[0], 10) || 2026;
+  const currentMonth = parseInt(dateParts[1], 10) || 10;
 
   if (!dayData) {
     return (
@@ -71,28 +76,28 @@ export default async function HomePage({
     {
       title: locale === 'ta' ? 'மாத காலண்டர்' : 'Monthly Calendar',
       subtitle: locale === 'ta' ? 'முழு மாத நாட்காட்டி' : 'Full Month View',
-      href: `/${locale}/calendar/month/2026/10`,
+      href: `/${locale}/calendar/month/${currentYear}/${currentMonth}`,
       icon: Compass,
       gradient: 'from-[#8B1515] to-[#C93B2B]',
     },
     {
       title: locale === 'ta' ? 'சுப முகூர்த்தம்' : 'Muhurtham Dates',
       subtitle: locale === 'ta' ? 'திருமண முகூர்த்த நாட்கள்' : 'Wedding Dates',
-      href: `/${locale}/muhurtham-dates`,
+      href: `/${locale}/muhurtham-dates?year=${currentYear}`,
       icon: Heart,
       gradient: 'from-[#D97706] to-[#F59E0B]',
     },
     {
       title: locale === 'ta' ? 'பண்டிகைகள்' : 'Festivals',
       subtitle: locale === 'ta' ? 'விரதங்கள் & விசேஷங்கள்' : 'Viratham & Holidays',
-      href: `/${locale}/festivals`,
+      href: `/${locale}/festivals?year=${currentYear}`,
       icon: Sparkles,
       gradient: 'from-[#BE123C] to-[#E11D48]',
     },
     {
       title: locale === 'ta' ? 'வருட காலண்டர்' : 'Yearly Overview',
       subtitle: locale === 'ta' ? '12 மாத காலண்டர் சுருக்கம்' : '12 Month Summary',
-      href: `/${locale}/calendar/year/2026`,
+      href: `/${locale}/calendar/year/${currentYear}`,
       icon: Calendar,
       gradient: 'from-[#15803D] to-[#16A34A]',
     },
@@ -108,22 +113,22 @@ export default async function HomePage({
       <DailyCalendarCard day={dayData} locale={locale} />
 
       {/* 3. Quick Feature Cards Ribbon (Colorfully Themed) */}
-      <section aria-label="Quick Calendar Categories" className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+      <section aria-label="Quick Calendar Categories" className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
         {quickCards.map((qc, idx) => {
           const Icon = qc.icon;
           return (
             <Link
               key={idx}
               href={qc.href}
-              className={`p-4 rounded-2xl bg-gradient-to-tr ${qc.gradient} text-white shadow-md hover:scale-102 hover:shadow-lg transition-all flex flex-col justify-between`}
+              className={`p-3 sm:p-4 rounded-2xl bg-gradient-to-tr ${qc.gradient} text-white shadow-md hover:scale-102 hover:shadow-lg transition-all flex flex-col justify-between`}
             >
               <div className="flex items-center justify-between">
-                <Icon className="w-5 h-5 text-white/90" />
-                <ArrowRight className="w-4 h-4 text-white/70" />
+                <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white/90 shrink-0" />
+                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/70 shrink-0" />
               </div>
-              <div className="mt-3">
-                <span className="text-sm font-black block">{qc.title}</span>
-                <span className="text-[11px] text-white/80 font-medium block truncate">{qc.subtitle}</span>
+              <div className="mt-2.5 sm:mt-3">
+                <span className="text-xs sm:text-sm font-black block truncate">{qc.title}</span>
+                <span className="text-[10px] sm:text-[11px] text-white/80 font-medium block truncate">{qc.subtitle}</span>
               </div>
             </Link>
           );
@@ -174,30 +179,8 @@ export default async function HomePage({
         </section>
       )}
 
-      {/* 6. Quick Monthly Navigation Grid */}
-      <section aria-labelledby="quick-monthly-heading" className="bg-white dark:bg-[#1D1418] border-2 border-[#EBDCCF] dark:border-[#38242A] p-6 rounded-3xl shadow-sm space-y-4">
-        <div className="flex items-center space-x-2 border-b-2 border-[#EBDCCF] dark:border-[#38242A] pb-3">
-          <Calendar className="w-5 h-5 text-[#8B1515] dark:text-[#FFD700]" />
-          <h2 id="quick-monthly-heading" className="text-lg font-black text-[#8B1515] dark:text-[#FFD700]">
-            {locale === 'ta' ? '2026 மாதாந்திர காலண்டர் தாள்கள்' : '2026 Monthly Calendar Sheets'}
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
-          {dict.months.map((mName, idx) => (
-            <Link
-              key={idx}
-              href={`/${locale}/calendar/month/2026/${idx + 1}`}
-              className="p-3 rounded-2xl text-center bg-[#FFFDF8] dark:bg-[#150E11] border-2 border-[#EBDCCF] dark:border-[#38242A] hover:border-[#8B1515] hover:bg-[#8B1515] hover:text-white dark:hover:border-[#FFD700] transition-all group"
-            >
-              <span className="text-xs font-extrabold text-[#8B1515] dark:text-[#FFD700] group-hover:text-white block truncate">
-                {mName}
-              </span>
-              <span className="text-[10px] text-[#5C5256] dark:text-[#A3969B] group-hover:text-white/80 font-semibold">2026</span>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {/* 6. Quick Monthly Navigation Grid (Supports 2026 & 2027) */}
+      <QuickMonthGrid initialYear={currentYear} locale={locale} />
 
       {/* 7. Bottom Leaderboard Ad */}
       <AdContainer slotName="Home Bottom Leaderboard" format="banner" />

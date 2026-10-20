@@ -10,10 +10,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/festivals',
     '/muhurtham-dates',
     '/calendar/year/2026',
-    '/calendar/year/2025',
+    '/calendar/year/2027',
     '/about',
     '/contact',
-    '/feedback',
     '/privacy-policy',
     '/terms',
   ];

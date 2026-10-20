@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <!-- Background Circle Radial Gradient -->
+    <radialGradient id="bgGrad" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#A81818"/>
+      <stop offset="70%" stop-color="#800C0C"/>
+      <stop offset="100%" stop-color="#550505"/>
+    </radialGradient>
+
+    <!-- Outer Gold Ring Gradient -->
+    <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE885"/>
+      <stop offset="40%" stop-color="#FFD700"/>
+      <stop offset="75%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#996515"/>
+    </linearGradient>
+
+    <!-- Divine Flame Gradient -->
+    <radialGradient id="flameInner" cx="50%" cy="75%" r="75%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="25%" stop-color="#FFF275"/>
+      <stop offset="60%" stop-color="#FF9900"/>
+      <stop offset="90%" stop-color="#E52B20"/>
+      <stop offset="100%" stop-color="#B71C1C"/>
+    </radialGradient>
+
+    <!-- Lamp Brass Gradient -->
+    <linearGradient id="brassGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#FFF5B8"/>
+      <stop offset="35%" stop-color="#FFD700"/>
+      <stop offset="70%" stop-color="#C59B27"/>
+      <stop offset="100%" stop-color="#7B5600"/>
+    </linearGradient>
+
+    <!-- Halo Glow Filter -->
+    <filter id="haloGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Outer Protective Halo Shadow -->
+  <circle cx="64" cy="64" r="60" fill="#000000" opacity="0.18" />
+
+  <!-- Main Background Badge -->
+  <circle cx="64" cy="64" r="58" fill="url(#bgGrad)" stroke="url(#goldBorder)" stroke-width="4.5"/>
+
+  <!-- Ornate Inner Dotted Sacred Border -->
+  <circle cx="64" cy="64" r="51.5" fill="none" stroke="#FFD700" stroke-width="1.2" stroke-dasharray="2.5 3.5" opacity="0.8"/>
+
+  <!-- Sun Radiance Aura behind flame -->
+  <g opacity="0.35" filter="url(#haloGlow)">
+    <circle cx="64" cy="46" r="16" fill="#FFD700"/>
+  </g>
+
+  <!-- Divine Agal Vilakku Flame -->
+  <g filter="url(#haloGlow)">
+    <!-- Outer flame teardrop -->
+    <path d="M 64 21 
+             C 53 35, 48 48, 54 59 
+             C 57 65, 71 65, 74 59 
+             C 80 48, 75 35, 64 21 Z" 
+          fill="url(#flameInner)"/>
+
+    <!-- Inner Core White Hot Flame -->
+    <path d="M 64 33 
+             C 58 43, 56 50, 60 57 
+             C 61 59, 67 59, 68 57 
+             C 72 50, 70 43, 64 33 Z" 
+          fill="#FFFFFF" opacity="0.92"/>
+  </g>
+
+  <!-- Traditional Agal Vilakku Clay/Brass Base -->
+  <!-- Lamp Rim / Body -->
+  <path d="M 28 64 
+           C 28 64, 38 78, 64 78 
+           C 90 78, 100 64, 100 64 
+           C 97 71, 84 84, 64 84 
+           C 44 84, 31 71, 28 64 Z" 
+        fill="url(#brassGrad)" 
+        stroke="#FFE885" 
+        stroke-width="1.2"/>
+
+  <!-- Lamp Spout / Wick Support Lip -->
+  <ellipse cx="64" cy="64.5" rx="36" ry="6" fill="#6A4600"/>
+  <ellipse cx="64" cy="63.5" rx="34" ry="4.5" fill="url(#brassGrad)"/>
+
+  <!-- Lamp Pedestal / Stand -->
+  <path d="M 52 82 
+           C 54 90, 48 94, 44 98 
+           L 84 98 
+           C 80 94, 74 90, 76 82 Z" 
+        fill="url(#brassGrad)" 
+        stroke="#FFE885" 
+        stroke-width="1"/>
+
+  <!-- Bottom Sacred Base Ring -->
+  <rect x="40" y="97" width="48" height="5.5" rx="2.5" fill="url(#goldBorder)" stroke="#FFF5B8" stroke-width="0.8"/>
+
+  <!-- Sacred Decorative Dots on Lamp -->
+  <circle cx="64" cy="74" r="2.2" fill="#FFE885"/>
+  <circle cx="53" cy="72" r="1.8" fill="#FFE885"/>
+  <circle cx="75" cy="72" r="1.8" fill="#FFE885"/>
+  <circle cx="43" cy="68" r="1.4" fill="#FFE885"/>
+  <circle cx="85" cy="68" r="1.4" fill="#FFE885"/>
+</svg>
