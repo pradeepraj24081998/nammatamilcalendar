@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, MessageSquare, Send, CheckCircle2, Copy, Check, MessageCircle, Clock, MapPin, Sparkles, Compass } from 'lucide-react';
+import { Mail, MessageSquare, Send, CheckCircle2, Copy, Check, MessageCircle, Clock, MapPin, Sparkles, Globe } from 'lucide-react';
 import { Locale } from '@/lib/types';
 
 interface ContactFormProps {
@@ -168,7 +168,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
     <div className="space-y-8 max-w-full overflow-hidden">
       {/* 1. Quick Direct Channels Banner (Email, WhatsApp, Operating Location & Timings) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
-        
+
         {/* Email Direct Card */}
         <div className="p-4 sm:p-5 rounded-2xl bg-white border-2 border-[#EBDCCF] shadow-xs flex flex-col justify-between hover:border-[#8B1515] transition-all">
           <div className="space-y-2">
@@ -243,13 +243,13 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
                 <span>{isTa ? 'காலை 8:00 AM – இரவு 9:00 PM IST' : '8:00 AM – 9:00 PM IST (All 7 Days)'}</span>
               </div>
               <p className="text-emerald-700 font-semibold">
-                {isTa ? '✓ 24 மணி நேரத்திற்குள் பதில் உறுதி' : '✓ 24-Hour Guaranteed SLA'}
+                {isTa ? '✓ விரைவான பதில் & உடனடி உதவி' : '✓ Fast Response & Direct Assistance'}
               </p>
             </div>
           </div>
           <div className="mt-3 inline-flex items-center justify-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#FFF9F0] border border-[#EBDCCF] text-[#8B1515]">
-            <Compass className="w-3.5 h-3.5" />
-            <span>{isTa ? 'சென்னை & உலகளாவிய தமிழ் சமூகம்' : 'Chennai & Global Tamils'}</span>
+            <Globe className="w-3.5 h-3.5" />
+            <span>{isTa ? 'உலகத் தமிழர்களுக்கான நம்பகமான சேவை' : 'Trusted Service for Tamils Worldwide'}</span>
           </div>
         </div>
 
@@ -306,7 +306,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            
+
             {/* Quick Topic Chips */}
             <div>
               <label className="block text-xs font-bold text-[#8B1515] uppercase tracking-wider mb-2">
@@ -321,11 +321,10 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
                       key={topic.id}
                       type="button"
                       onClick={() => setFormData({ ...formData, subject: label })}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
-                        isSelected
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${isSelected
                           ? 'bg-[#8B1515] text-white border-[#8B1515] shadow-xs'
                           : 'bg-[#FFF9F0] text-[#70263B] border-[#EBDCCF] hover:border-[#8B1515]'
-                      }`}
+                        }`}
                     >
                       {label}
                     </button>
@@ -444,9 +443,9 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
                 <span>{submitting ? (isTa ? 'அனுப்பப்படுகிறது...' : 'Sending...') : (isTa ? 'Email வழியாக அனுப்பவும்' : 'Send via Email')}</span>
               </button>
             </div>
-            
+
             <p className="text-[11px] text-center text-[#5C5256]">
-              {isTa 
+              {isTa
                 ? `செய்திகள் நேரடியாக ${officialEmail} மற்றும் WhatsApp எண் ${officialPhone}-க்கு சென்றடையும்.`
                 : `Messages will be directly sent to ${officialEmail} and WhatsApp ${officialPhone}.`}
             </p>
