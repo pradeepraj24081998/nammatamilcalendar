@@ -125,18 +125,21 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
           place: formData.place || 'Not specified',
           category: formData.subject || 'General Inquiry',
           message: formData.message,
+          botcheck: '',
           page_url: typeof window !== 'undefined' ? window.location.href : '',
           language: isTa ? 'Tamil (ta)' : 'English (en)',
         }),
       });
 
       const data = await response.json();
+      console.log('Web3Forms Response:', data);
 
       if (data.success) {
         saveToLocalBackup();
         setLastAction('form');
         setSubmitted(true);
       } else {
+        console.warn('Web3Forms returned failure:', data.message);
         // Fallback to mailto if API error
         saveToLocalBackup();
         const subject = `[Namma Tamil Calendar] ${formData.subject || 'User Inquiry'}`;
