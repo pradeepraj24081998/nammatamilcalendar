@@ -12,7 +12,6 @@ export const metadata: Metadata = {
   keywords: [
     'Tamil Calendar 2026',
     'Tamil Calendar 2027',
-    'Tamil Calendar 2025',
     'Daily Tamil Calendar',
     'தமிழ் காலண்டர் 2026',
     'தமிழ் காலண்டர் 2027',

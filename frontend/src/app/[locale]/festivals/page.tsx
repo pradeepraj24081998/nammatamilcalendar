@@ -66,7 +66,7 @@ export default async function FestivalsPage({
 
         {/* Year Filter Pills */}
         <div className="flex items-center space-x-2 mt-5">
-          {[2025, 2026, 2027].map((yr) => (
+          {[2026, 2027].map((yr) => (
             <Link
               key={yr}
               href={`/${locale}/festivals?year=${yr}`}

@@ -63,7 +63,7 @@ export default async function MuhurthamPage({
 
         {/* Year Filter */}
         <div className="flex items-center space-x-2 mt-5">
-          {[2025, 2026, 2027].map((yr) => (
+          {[2026, 2027].map((yr) => (
             <Link
               key={yr}
               href={`/${locale}/muhurtham-dates?year=${yr}`}

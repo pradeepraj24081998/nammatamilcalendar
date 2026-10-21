@@ -280,8 +280,8 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
             </h3>
             <p className="text-xs sm:text-sm text-emerald-800 font-medium max-w-md mx-auto leading-relaxed">
               {isTa
-                ? 'தங்கள் விவரங்கள் பெறப்பட்டுவிட்டன. எங்களது ஆசிரியர் குழுவினர் விரைவில் இதனைப் பரிசீலித்து உங்களைத் தொடர்புகொள்வார்கள். நன்றி!'
-                : 'Thank you for reaching out! We have received your inquiry and our team will get back to you shortly.'}
+                ? 'தங்கள் விவரங்கள் வெற்றிகரமாகப் பெறப்பட்டுவிட்டன. விரைவில் உங்களைத் தொடர்புகொள்கிறோம். நன்றி!'
+                : 'Thank you for reaching out! We have received your inquiry and will get back to you shortly.'}
             </p>
 
             <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
