@@ -276,12 +276,12 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
           <div className="p-6 rounded-2xl bg-emerald-50 border-2 border-emerald-300 text-center space-y-4 animate-in fade-in">
             <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
             <h3 className="text-lg font-black text-emerald-900">
-              {isTa ? 'தங்கள் செய்தி வெற்றிகரமாக அனுப்பப்பட்டு சேமிக்கப்பட்டது!' : 'Message Sent & Recorded Successfully!'}
+              {isTa ? 'மிக்க நன்றி! தங்கள் செய்தி பெறப்பட்டது' : 'Thank You! Message Received'}
             </h3>
             <p className="text-xs sm:text-sm text-emerald-800 font-medium max-w-md mx-auto leading-relaxed">
               {isTa
-                ? `தங்கள் செய்தி ஆசிரியர் குழுவிற்கு (${officialEmail}) வெற்றிகரமாக மின்னஞ்சல் செய்யப்பட்டு, பாதுகாப்பாக பதிவு செய்யப்பட்டுள்ளது. 24 மணி நேரத்திற்குள் உங்களைத் தொடர்புகொள்வோம்.`
-                : `Your message has been emailed directly to our team (${officialEmail}) and securely recorded. We will get back to you within 24 hours.`}
+                ? 'தங்கள் விவரங்கள் பெறப்பட்டுவிட்டன. எங்களது ஆசிரியர் குழுவினர் விரைவில் இதனைப் பரிசீலித்து உங்களைத் தொடர்புகொள்வார்கள். நன்றி!'
+                : 'Thank you for reaching out! We have received your inquiry and our team will get back to you shortly.'}
             </p>
 
             <div className="pt-2 flex flex-wrap items-center justify-center gap-3">

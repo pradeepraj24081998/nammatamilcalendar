@@ -41,8 +41,8 @@ export default async function ContactPage({
         </div>
         <p className="text-xs sm:text-sm text-[#FFF9F0]/90 max-w-2xl font-medium leading-relaxed">
           {isTa
-            ? 'காலண்டர் விவரங்கள், பஞ்சாங்க திருத்தங்கள், விளம்பரங்கள் அல்லது புதிய யோசனைகளை எங்களுடன் எளிதாகப் பகிருங்கள். 24 மணி நேரத்திற்குள் எங்களது ஆசிரியர் குழு உங்களைத் தொடர்புகொள்ளும்.'
-            : 'Reach out for festival date inquiries, corrections, advertising opportunities, or feature requests. Guaranteed reply within 24 hours.'}
+            ? 'காலண்டர் விவரங்கள், பண்டிகைகள், சுபமுகூர்த்தம் அல்லது உங்கள் கருத்துக்களை எங்களுடன் எளிதாகப் பகிருங்கள். உங்களுக்கு உதவ நாங்கள் எப்போதும் தயாராக உள்ளோம்.'
+            : 'Have questions, feedback, or inquiries regarding festival dates, auspicious timings, or calendar features? Reach out anytime — we are always here to help.'}
         </p>
       </div>
 
