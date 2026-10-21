@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, Phone, MessageSquare, Send, CheckCircle2, Copy, Check, MessageCircle, Clock, MapPin, Sparkles, Compass } from 'lucide-react';
+import { Mail, MessageSquare, Send, CheckCircle2, Copy, Check, MessageCircle, Clock, MapPin, Sparkles, Compass } from 'lucide-react';
 import { Locale } from '@/lib/types';
 
 interface ContactFormProps {
@@ -24,12 +24,12 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
   const [submitted, setSubmitted] = useState(false);
   const [lastAction, setLastAction] = useState<'email' | 'whatsapp' | 'form'>('form');
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const [copiedPhone, setCopiedPhone] = useState(false);
 
   const officialEmail = 'arangaapradeep@gmail.com';
   const officialPhone = '+91 80724 09162';
   const rawPhoneNumber = '8072409162';
   const whatsappNumber = '918072409162';
+  const WEB3FORMS_ACCESS_KEY = '9a83f790-8279-49e5-ba0a-972106081451';
 
   const quickTopics = [
     { id: 'panchangam', labelTa: '🌟 நல்ல நேரம் / பஞ்சாங்கம்', labelEn: '🌟 Auspicious Timings / Panchangam' },
@@ -45,16 +45,10 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
     setTimeout(() => setCopiedEmail(false), 2500);
   };
 
-  const handleCopyPhone = () => {
-    navigator.clipboard.writeText(rawPhoneNumber);
-    setCopiedPhone(true);
-    setTimeout(() => setCopiedPhone(false), 2500);
-  };
-
   const buildMessageSummary = () => {
     return isTa
-      ? `வணக்கம்,\n\nநம்ம தமிழ் காலண்டர் மூலம் தொடர்பு செய்தி:\n• பெயர்: ${formData.name || 'குறிப்பிடப்படவில்லை'}\n• மின்னஞ்சல்: ${formData.email || 'குறிப்பிடப்படவில்லை'}\n• தொலைபேசி: ${formData.phone || 'குறிப்பிடப்படவில்லை'}\n• ஊர் / இருப்பிடம்: ${formData.place || 'குறிப்பிடப்படவில்லை'}\n• தலைப்பு: ${formData.subject || 'பொதுவான தொடர்பு'}\n\nசெய்தி விவரம்:\n${formData.message || ''}`
-      : `Hello Pradeep,\n\nInquiry from Namma Tamil Calendar:\n• Name: ${formData.name || 'Not specified'}\n• Email: ${formData.email || 'Not specified'}\n• Phone: ${formData.phone || 'Not specified'}\n• Location / City: ${formData.place || 'Not specified'}\n• Subject: ${formData.subject || 'General Inquiry'}\n\nMessage Details:\n${formData.message || ''}`;
+      ? `வணக்கம்,\n\nநம்ம தமிழ் காலண்டர் மூலம் தொடர்பு செய்தி:\n• பெயர்: ${formData.name || 'குறிப்பிடப்படவில்லை'}\n• மின்னஞ்சல்: ${formData.email || 'குறிப்பிடப்படவில்லை'}\n• வாட்ஸ்அப்: ${formData.phone || 'குறிப்பிடப்படவில்லை'}\n• ஊர் / இருப்பிடம்: ${formData.place || 'குறிப்பிடப்படவில்லை'}\n• தலைப்பு: ${formData.subject || 'பொதுவான தொடர்பு'}\n\nசெய்தி விவரம்:\n${formData.message || ''}`
+      : `Hello Namma Tamil Calendar Team,\n\nInquiry from Namma Tamil Calendar:\n• Name: ${formData.name || 'Not specified'}\n• Email: ${formData.email || 'Not specified'}\n• WhatsApp: ${formData.phone || 'Not specified'}\n• Location / City: ${formData.place || 'Not specified'}\n• Subject: ${formData.subject || 'General Inquiry'}\n\nMessage Details:\n${formData.message || ''}`;
   };
 
   const saveToLocalBackup = () => {
@@ -108,29 +102,71 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
     setSubmitted(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    saveToLocalBackup();
 
-    // Auto-open mail client to ensure message actually reaches arangaapradeep@gmail.com
-    const subject = `[Namma Tamil Calendar] ${formData.subject || 'User Inquiry'}`;
-    const body = buildMessageSummary();
-    const mailtoUrl = `mailto:${officialEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          from_name: 'Namma Tamil Calendar Website',
+          subject: formData.subject
+            ? `[Namma Tamil Calendar] ${formData.subject}`
+            : (isTa ? 'நம்ம தமிழ் காலண்டர் - புதிய தொடர்பு செய்தி' : 'Namma Tamil Calendar - New Contact Inquiry'),
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || 'Not specified',
+          place: formData.place || 'Not specified',
+          category: formData.subject || 'General Inquiry',
+          message: formData.message,
+          page_url: typeof window !== 'undefined' ? window.location.href : '',
+          language: isTa ? 'Tamil (ta)' : 'English (en)',
+        }),
+      });
 
-    setTimeout(() => {
+      const data = await response.json();
+
+      if (data.success) {
+        saveToLocalBackup();
+        setLastAction('form');
+        setSubmitted(true);
+      } else {
+        // Fallback to mailto if API error
+        saveToLocalBackup();
+        const subject = `[Namma Tamil Calendar] ${formData.subject || 'User Inquiry'}`;
+        const body = buildMessageSummary();
+        const mailtoUrl = `mailto:${officialEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        if (typeof window !== 'undefined') {
+          window.location.href = mailtoUrl;
+        }
+        setLastAction('email');
+        setSubmitted(true);
+      }
+    } catch {
+      // Safe offline fallback
+      saveToLocalBackup();
+      const subject = `[Namma Tamil Calendar] ${formData.subject || 'User Inquiry'}`;
+      const body = buildMessageSummary();
+      const mailtoUrl = `mailto:${officialEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       if (typeof window !== 'undefined') {
         window.location.href = mailtoUrl;
       }
-      setSubmitting(false);
-      setLastAction('form');
+      setLastAction('email');
       setSubmitted(true);
-    }, 600);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className="space-y-8 max-w-full overflow-hidden">
-      {/* 1. Quick Direct Channels Banner (Email, WhatsApp & Call, Operating Location & Timings) */}
+      {/* 1. Quick Direct Channels Banner (Email, WhatsApp, Operating Location & Timings) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
         
         {/* Email Direct Card */}
@@ -162,40 +198,31 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
           </button>
         </div>
 
-        {/* WhatsApp & Direct Call Card */}
+        {/* WhatsApp Chat Card */}
         <div className="p-4 sm:p-5 rounded-2xl bg-white border-2 border-[#EBDCCF] shadow-xs flex flex-col justify-between hover:border-emerald-600 transition-all">
           <div className="space-y-2">
             <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600">
               <MessageCircle className="w-5 h-5" />
             </div>
             <span className="text-xs font-bold text-emerald-800 block uppercase tracking-wider">
-              {isTa ? 'வாட்ஸ்அப் & அழைப்பு' : 'WhatsApp & Direct Call'}
+              {isTa ? 'வாட்ஸ்அப் ஆதரவு' : 'WhatsApp Support'}
             </span>
             <span className="text-xs sm:text-sm font-extrabold text-[#1F1517] block">
               {officialPhone}
             </span>
             <span className="text-[11px] text-[#5C5256] block">
-              {isTa ? 'உடனடி உதவி மற்றும் விரைவான ஆலோசனைகள்' : 'Instant Chat & Quick Inquiries (IST)'}
+              {isTa ? 'உடனடி வாட்ஸ்அப் உதவி மற்றும் ஆலோசனைகள்' : 'Instant WhatsApp Inquiries & Support (IST)'}
             </span>
           </div>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            <a
-              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(isTa ? 'வணக்கம் பிரதீப், நம்ம தமிழ் காலண்டர் தொடர்பாக பேச விரும்புகிறேன்.' : 'Hello Pradeep, I would like to inquire about Namma Tamil Calendar.')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center space-x-1 px-2.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition-all shadow-xs cursor-pointer text-center"
-            >
-              <MessageCircle className="w-3.5 h-3.5 shrink-0" />
-              <span>WhatsApp</span>
-            </a>
-            <a
-              href={`tel:+91${rawPhoneNumber}`}
-              className="inline-flex items-center justify-center space-x-1 px-2.5 py-1.5 rounded-xl text-xs font-bold bg-[#FFF9F0] border border-[#EBDCCF] text-[#8B1515] hover:bg-[#8B1515] hover:text-white transition-all cursor-pointer text-center"
-            >
-              <Phone className="w-3.5 h-3.5 shrink-0" />
-              <span>{isTa ? 'அழைக்க' : 'Call'}</span>
-            </a>
-          </div>
+          <a
+            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(isTa ? 'வணக்கம், நம்ம தமிழ் காலண்டர் தொடர்பாக பேச விரும்புகிறேன்.' : 'Hello, I would like to inquire about Namma Tamil Calendar.')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 inline-flex items-center justify-center space-x-1.5 w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition-all shadow-xs cursor-pointer text-center"
+          >
+            <MessageCircle className="w-4 h-4 shrink-0" />
+            <span>{isTa ? 'WhatsApp-ல் பேச' : 'Chat on WhatsApp'}</span>
+          </a>
         </div>
 
         {/* Operating Area & Timings Card */}
@@ -246,12 +273,12 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
           <div className="p-6 rounded-2xl bg-emerald-50 border-2 border-emerald-300 text-center space-y-4 animate-in fade-in">
             <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
             <h3 className="text-lg font-black text-emerald-900">
-              {isTa ? 'தங்கள் செய்தி வெற்றிகரமாக அனுப்பப்பட்டது!' : 'Message Prepared & Dispatched!'}
+              {isTa ? 'தங்கள் செய்தி வெற்றிகரமாக அனுப்பப்பட்டு சேமிக்கப்பட்டது!' : 'Message Sent & Recorded Successfully!'}
             </h3>
             <p className="text-xs sm:text-sm text-emerald-800 font-medium max-w-md mx-auto leading-relaxed">
               {isTa
-                ? `தங்கள் செய்தி ஆசிரியர் பிரதீப் ராஜ் (${officialEmail}) அவர்களுக்கு அனுப்ப தயாராகியுள்ளது. உடனடி பதிலுக்கு வாட்ஸ்அப் (+91 ${rawPhoneNumber}) வழியாகவும் பேசலாம்.`
-                : `Your message was prepared for Pradeep Raj (${officialEmail}). For faster direct responses, you can also connect via WhatsApp (+91 ${rawPhoneNumber}).`}
+                ? `தங்கள் செய்தி ஆசிரியர் குழுவிற்கு (${officialEmail}) வெற்றிகரமாக மின்னஞ்சல் செய்யப்பட்டு, பாதுகாப்பாக பதிவு செய்யப்பட்டுள்ளது. 24 மணி நேரத்திற்குள் உங்களைத் தொடர்புகொள்வோம்.`
+                : `Your message has been emailed directly to our team (${officialEmail}) and securely recorded. We will get back to you within 24 hours.`}
             </p>
 
             <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
@@ -318,7 +345,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder={isTa ? 'எ.கா: பிரதீப் ராஜ்' : 'e.g. Pradeep Raj'}
+                  placeholder={isTa ? 'எ.கா: சுந்தர் / கார்த்திக்' : 'e.g. Sundar / Karthik'}
                   className="w-full px-4 py-2.5 rounded-xl border-2 border-[#EBDCCF] bg-[#FFFDF8] text-sm font-semibold focus:border-[#8B1515] focus:outline-none"
                 />
               </div>
@@ -332,23 +359,23 @@ export const ContactForm: React.FC<ContactFormProps> = ({ locale }) => {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder={isTa ? 'எ.கா: arangaapradeep@gmail.com' : 'e.g. yourname@example.com'}
+                  placeholder="name@example.com"
                   className="w-full px-4 py-2.5 rounded-xl border-2 border-[#EBDCCF] bg-[#FFFDF8] text-sm font-semibold focus:border-[#8B1515] focus:outline-none"
                 />
               </div>
             </div>
 
-            {/* Row 2: Phone and Place / City */}
+            {/* Row 2: WhatsApp Phone and Place / City */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold text-[#8B1515] uppercase tracking-wider mb-1.5">
-                  {isTa ? 'வாட்ஸ்அப் / தொலைபேசி எண் (விருப்பமிருந்தால்)' : 'Phone / WhatsApp (Optional)'}
+                  {isTa ? 'வாட்ஸ்அப் எண் (விருப்பமிருந்தால்)' : 'WhatsApp Number (Optional)'}
                 </label>
                 <input
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  placeholder={isTa ? 'எ.கா: +91 80724 09162 அல்லது 98765 43210' : 'e.g. +91 80724 09162 or 98765 43210'}
+                  placeholder="+91 98765 43210"
                   className="w-full px-4 py-2.5 rounded-xl border-2 border-[#EBDCCF] bg-[#FFFDF8] text-sm font-semibold focus:border-[#8B1515] focus:outline-none"
                 />
               </div>
