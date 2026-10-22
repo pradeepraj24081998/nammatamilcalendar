@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Sparkles } from 'lucide-react';
 import { Locale } from '@/lib/types';
 import { getDictionary } from '@/lib/i18n';
-import { getTodayISTString } from '@/lib/api';
+import { getTodayISTString, addDays } from '@/lib/dateUtils';
 
 interface DateSelectorProps {
   currentDateStr: string;
@@ -17,18 +17,12 @@ export const DateSelector: React.FC<DateSelectorProps> = ({ currentDateStr, loca
   const dict = getDictionary(locale);
   const isTa = locale === 'ta';
 
-  const calculateDate = (baseStr: string, offset: number) => {
-    const d = new Date(baseStr);
-    d.setDate(d.getDate() + offset);
-    return d.toISOString().split('T')[0];
-  };
+  const prevDate = addDays(currentDateStr, -1);
+  const nextDate = addDays(currentDateStr, 1);
 
-  const prevDate = calculateDate(currentDateStr, -1);
-  const nextDate = calculateDate(currentDateStr, 1);
-  
   const todayDate = getTodayISTString();
-  const yesterdayDate = calculateDate(todayDate, -1);
-  const tomorrowDate = calculateDate(todayDate, 1);
+  const yesterdayDate = addDays(todayDate, -1);
+  const tomorrowDate = addDays(todayDate, 1);
 
   const isToday = currentDateStr === todayDate;
   const isYesterday = currentDateStr === yesterdayDate;
@@ -40,17 +34,23 @@ export const DateSelector: React.FC<DateSelectorProps> = ({ currentDateStr, loca
     }
   };
 
+  const handleTodayClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // Always navigate to today's authoritative calendar URL
+    router.push(`/${locale}/calendar/${todayDate}`);
+  };
+
   return (
     <nav
       aria-label="Date Navigation"
       className="bg-white border-2 border-[#EBDCCF] p-2.5 sm:p-3.5 rounded-2xl shadow-sm space-y-2.5 max-w-full overflow-hidden"
     >
-      {/* 1. Quick Triad Row: Yesterday | Today | Tomorrow (Inspired by TamilDailyCalendar) */}
+      {/* 1. Quick Triad Row: Yesterday | Today | Tomorrow */}
       <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
         <button
           onClick={() => router.push(`/${locale}/calendar/${yesterdayDate}`)}
           type="button"
-          className={`py-1.5 sm:py-2 px-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer text-center truncate ${
+          className={`min-h-[42px] sm:min-h-[44px] py-1.5 sm:py-2 px-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer text-center truncate active:scale-95 touch-manipulation select-none ${
             isYesterday
               ? 'bg-[#8B1515] text-white shadow-xs'
               : 'bg-[#FFF9F0] text-[#700C0C] border border-[#EBDCCF] hover:bg-[#8B1515] hover:text-white'
@@ -60,9 +60,10 @@ export const DateSelector: React.FC<DateSelectorProps> = ({ currentDateStr, loca
         </button>
 
         <button
-          onClick={() => router.push(`/${locale}`)}
+          onClick={handleTodayClick}
           type="button"
-          className={`py-1.5 sm:py-2 px-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer text-center truncate flex items-center justify-center space-x-1 ${
+          aria-label={isTa ? 'இன்றைய காலண்டர்' : "Today's Calendar"}
+          className={`min-h-[42px] sm:min-h-[44px] py-1.5 sm:py-2 px-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer text-center truncate flex items-center justify-center space-x-1 active:scale-95 touch-manipulation select-none ${
             isToday
               ? 'bg-[#8B1515] text-white shadow-md ring-2 ring-[#FFD700]'
               : 'bg-[#FFF9F0] text-[#700C0C] border border-[#EBDCCF] hover:bg-[#8B1515] hover:text-white'
@@ -75,7 +76,7 @@ export const DateSelector: React.FC<DateSelectorProps> = ({ currentDateStr, loca
         <button
           onClick={() => router.push(`/${locale}/calendar/${tomorrowDate}`)}
           type="button"
-          className={`py-1.5 sm:py-2 px-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer text-center truncate ${
+          className={`min-h-[42px] sm:min-h-[44px] py-1.5 sm:py-2 px-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer text-center truncate active:scale-95 touch-manipulation select-none ${
             isTomorrow
               ? 'bg-[#8B1515] text-white shadow-xs'
               : 'bg-[#FFF9F0] text-[#700C0C] border border-[#EBDCCF] hover:bg-[#8B1515] hover:text-white'

@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, Sparkles, Clock, AlertTriangle, Compass, Arr
 import { CalendarDay, Locale } from '@/lib/types';
 import { getDictionary } from '@/lib/i18n';
 import { AgalVilakkuIcon } from '../ui/CalendarIcons';
+import { getTodayISTString } from '@/lib/dateUtils';
 
 interface MonthGridProps {
   year: number;
@@ -34,7 +35,7 @@ export const MonthGrid: React.FC<MonthGridProps> = ({ year, month, days, locale 
   let startingWeekday = firstDayOfMonth.getDay() - 1;
   if (startingWeekday === -1) startingWeekday = 6;
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getTodayISTString();
 
   const dayMap = new Map<string, CalendarDay>();
   days.forEach((d) => dayMap.set(d.date, d));

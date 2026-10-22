@@ -5,6 +5,8 @@ import { AdContainer } from '@/components/ui/AdContainer';
 import { Locale } from '@/lib/types';
 import type { Metadata } from 'next';
 
+export const revalidate = 86400;
+
 export async function generateMetadata({
   params,
 }: {

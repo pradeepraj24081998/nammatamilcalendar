@@ -9,7 +9,11 @@ import { TempleBellIcon, AgalVilakkuIcon, AuspiciousSunIcon } from '@/components
 import { Locale } from '@/lib/types';
 import { getDictionary } from '@/lib/i18n';
 import { Sparkles, ArrowRight, Calendar, Heart, Compass } from 'lucide-react';
+import { getTodayISTString } from '@/lib/dateUtils';
 import type { Metadata } from 'next';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function generateMetadata({
   params,
@@ -18,7 +22,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isEn = locale === 'en';
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getTodayISTString();
 
   return {
     title: isEn
@@ -51,11 +55,11 @@ export default async function HomePage({
   // Fetch today's calendar data
   let dayData = await fetchTodayCalendar();
   if (!dayData) {
-    dayData = await fetchDayCalendar('2026-10-20');
+    dayData = await fetchDayCalendar(getTodayISTString());
   }
 
   const upcomingFestivals = await fetchUpcomingFestivals();
-  const currentDateStr = dayData?.date || new Date().toISOString().split('T')[0];
+  const currentDateStr = dayData?.date || getTodayISTString();
   const dateParts = currentDateStr.split('-');
   const currentYear = parseInt(dateParts[0], 10) || 2026;
   const currentMonth = parseInt(dateParts[1], 10) || 10;
@@ -155,6 +159,25 @@ export default async function HomePage({
               <span>{locale === 'ta' ? 'அனைத்தும் பார்க்க' : 'View All'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
+          </div>
+
+          {/* Quick Viratham & Observance Jump Pills */}
+          <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none">
+            {[
+              { labelTa: 'பௌர்ணமி', labelEn: 'Pournami', cat: 'pournami' },
+              { labelTa: 'அமாவாசை', labelEn: 'Amavasai', cat: 'amavasai' },
+              { labelTa: 'பிரதோஷம்', labelEn: 'Pradosham', cat: 'pradosham' },
+              { labelTa: 'கிருத்திகை', labelEn: 'Krithigai', cat: 'krithigai' },
+              { labelTa: 'அரசு விடுமுறை', labelEn: 'Holidays', cat: 'holidays' },
+            ].map((pill) => (
+              <Link
+                key={pill.cat}
+                href={`/${locale}/festivals?year=${currentYear}&category=${pill.cat}`}
+                className="text-xs font-black px-3 py-1 rounded-xl bg-[#FFF9F0] text-[#8B1515] border border-[#EBDCCF] hover:bg-[#8B1515] hover:text-white transition-all shrink-0 active:scale-95 touch-manipulation shadow-2xs"
+              >
+                {locale === 'ta' ? pill.labelTa : pill.labelEn}
+              </Link>
+            ))}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">

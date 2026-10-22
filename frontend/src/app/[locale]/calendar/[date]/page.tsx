@@ -8,6 +8,8 @@ import { Locale } from '@/lib/types';
 import { getDictionary } from '@/lib/i18n';
 import type { Metadata } from 'next';
 
+export const revalidate = 86400;
+
 export async function generateMetadata({
   params,
 }: {

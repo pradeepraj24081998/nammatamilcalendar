@@ -8,6 +8,7 @@ import { Calendar, Menu, X, Sparkles, Clock, Compass, Heart, PhoneCall } from 'l
 import { Locale } from '@/lib/types';
 import { getDictionary } from '@/lib/i18n';
 import { LanguageToggle } from '../ui/LanguageToggle';
+import { getISTCurrentYearAndMonth } from '@/lib/dateUtils';
 
 interface HeaderProps {
   locale: Locale;
@@ -20,10 +21,11 @@ export const Header: React.FC<HeaderProps> = ({ locale }) => {
 
   const isTa = locale === 'ta';
 
-  // Dynamic current date reference (defaults to current year/month)
+  // Dynamic current date reference (defaults to current year/month in IST)
+  const istDate = getISTCurrentYearAndMonth();
   const is2027 = pathname.includes('/2027');
-  const activeYear = is2027 ? 2027 : 2026;
-  const currentMonth = new Date().getMonth() + 1;
+  const activeYear = is2027 ? 2027 : istDate.year;
+  const currentMonth = istDate.month;
 
   // Clean navigation links (Feedback tab removed as Contact Us handles all inquiries)
   const navLinks = [

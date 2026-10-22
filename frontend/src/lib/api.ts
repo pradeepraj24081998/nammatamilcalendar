@@ -20,22 +20,8 @@ const data2027: CalendarDay[] = data2027Raw as unknown as CalendarDay[];
 const dayMap2026 = new Map<string, CalendarDay>(data2026.map((d) => [d.date, d]));
 const dayMap2027 = new Map<string, CalendarDay>(data2027.map((d) => [d.date, d]));
 
-/**
- * Get current Indian Standard Time (IST) date string in YYYY-MM-DD
- */
-export function getTodayISTString(): string {
-  try {
-    const formatter = new Intl.DateTimeFormat('en-CA', {
-      timeZone: 'Asia/Kolkata',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    });
-    return formatter.format(new Date());
-  } catch {
-    return new Date().toISOString().split('T')[0];
-  }
-}
+export { getTodayISTString } from './dateUtils';
+import { getTodayISTString } from './dateUtils';
 
 /**
  * Algorithmic fallback generator if an out-of-range date is requested
@@ -298,16 +284,45 @@ export async function fetchYearCalendar(year: number): Promise<YearCalendarRespo
   };
 }
 
+const HOLIDAY_KEYWORDS = [
+  'விடுமுறை',
+  'புத்தாண்டு',
+  'பொங்கல்',
+  'குடியரசு',
+  'சுதந்திர',
+  'காந்தி',
+  'தீபாவளி',
+  'ரம்ஜான்',
+  'பக்ரீத்',
+  'மொஹரம்',
+  'கிறிஸ்துமஸ்',
+  'மே தினம்',
+  'மகாவீர்',
+  'புத்த பூர்ணிமா',
+  'மில்லாடி',
+  'ஆயுத பூஜை',
+  'விஜயதசமி',
+  'நல்ல வெள்ளி',
+  'தெலுங்கு வருட',
+  'உழவர் திருநாள்',
+];
+
 /**
- * Fetch verified festivals filtered by year, month, or search query
+ * Fetch verified festivals and auspicious observances filtered by year, month, query, or category
  */
-export async function fetchFestivals(year: number = 2026, month?: number, query?: string): Promise<CalendarDay[]> {
+export async function fetchFestivals(
+  year: number = 2026,
+  month?: number,
+  query?: string,
+  category?: string
+): Promise<CalendarDay[]> {
   if (USE_BACKEND) {
     try {
       const params = new URLSearchParams();
       if (year) params.append('year', year.toString());
       if (month) params.append('month', month.toString());
       if (query) params.append('q', query);
+      if (category) params.append('category', category);
 
       const res = await fetch(`${API_BASE}/festivals/?${params.toString()}`, { next: { revalidate: 3600 } });
       if (res.ok) {
@@ -321,7 +336,49 @@ export async function fetchFestivals(year: number = 2026, month?: number, query?
 
   const sourceData = year === 2026 ? data2026 : year === 2027 ? data2027 : [...data2026, ...data2027];
 
-  let filtered = sourceData.filter((d) => Boolean(d.festival_info || d.festival_addon));
+  // Include festivals, addons, and all key auspicious dates (Pournami, Amavasai, Pradosham, Krithigai, etc.)
+  let filtered = sourceData.filter((d) => Boolean(d.festival_info || d.festival_addon || d.day_auspicious));
+
+  // Category filter
+  if (category && category !== 'all') {
+    const cat = category.toLowerCase();
+    if (cat === 'pournami') {
+      filtered = filtered.filter(
+        (d) =>
+          (d.day_auspicious && d.day_auspicious.includes('பௌர்ணமி')) ||
+          (d.festival_info && d.festival_info.includes('பௌர்ணமி'))
+      );
+    } else if (cat === 'amavasai') {
+      filtered = filtered.filter(
+        (d) =>
+          (d.day_auspicious && d.day_auspicious.includes('அமாவாசை')) ||
+          (d.festival_info && d.festival_info.includes('அமாவாசை'))
+      );
+    } else if (cat === 'pradosham') {
+      filtered = filtered.filter(
+        (d) =>
+          (d.day_auspicious && d.day_auspicious.includes('பிரதோஷம்')) ||
+          (d.festival_info && d.festival_info.includes('பிரதோஷம்'))
+      );
+    } else if (cat === 'krithigai') {
+      filtered = filtered.filter(
+        (d) =>
+          (d.day_auspicious && (d.day_auspicious.includes('கிருத்திகை') || d.day_auspicious.includes('கார்த்திகை'))) ||
+          (d.festival_info && (d.festival_info.includes('கிருத்திகை') || d.festival_info.includes('கார்த்திகை')))
+      );
+    } else if (cat === 'holidays') {
+      filtered = filtered.filter((d) => {
+        const combined = `${d.festival_info || ''} ${d.festival_addon || ''}`;
+        return HOLIDAY_KEYWORDS.some((kw) => combined.includes(kw));
+      });
+    } else if (cat === 'viratham') {
+      const virathamKeys = ['ஏகாதசி', 'சதுர்த்தி', 'சஷ்டி', 'சிவராத்திரி', 'திருவோணம்'];
+      filtered = filtered.filter((d) => {
+        const ausp = d.day_auspicious || '';
+        return virathamKeys.some((k) => ausp.includes(k));
+      });
+    }
+  }
 
   if (month) {
     const prefix = `-${String(month).padStart(2, '0')}-`;
@@ -349,14 +406,18 @@ export async function fetchUpcomingFestivals(): Promise<CalendarDay[]> {
   const todayStr = getTodayISTString();
   const allDays = [...data2026, ...data2027];
 
-  const upcoming = allDays.filter((d) => d.date >= todayStr && Boolean(d.festival_info || d.festival_addon));
+  const upcoming = allDays.filter(
+    (d) => d.date >= todayStr && Boolean(d.festival_info || d.festival_addon || d.day_auspicious)
+  );
 
   if (upcoming.length > 0) {
     return upcoming.slice(0, 12);
   }
 
   // If today is past 2027, return festivals from beginning of 2026
-  return allDays.filter((d) => Boolean(d.festival_info || d.festival_addon)).slice(0, 12);
+  return allDays
+    .filter((d) => Boolean(d.festival_info || d.festival_addon || d.day_auspicious))
+    .slice(0, 12);
 }
 
 /**
