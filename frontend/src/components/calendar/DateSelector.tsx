@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useTransition } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Sparkles } from 'lucide-react';
 import { Locale } from '@/lib/types';
@@ -14,6 +15,7 @@ interface DateSelectorProps {
 
 export const DateSelector: React.FC<DateSelectorProps> = ({ currentDateStr, locale }) => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const dict = getDictionary(locale);
   const isTa = locale === 'ta';
 
@@ -30,14 +32,11 @@ export const DateSelector: React.FC<DateSelectorProps> = ({ currentDateStr, loca
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
-      router.push(`/${locale}/calendar/${e.target.value}`);
+      const selected = e.target.value;
+      startTransition(() => {
+        router.push(`/${locale}/calendar/${selected}`);
+      });
     }
-  };
-
-  const handleTodayClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    // Always navigate to today's authoritative calendar URL
-    router.push(`/${locale}/calendar/${todayDate}`);
   };
 
   return (
@@ -45,23 +44,23 @@ export const DateSelector: React.FC<DateSelectorProps> = ({ currentDateStr, loca
       aria-label="Date Navigation"
       className="bg-white border-2 border-[#EBDCCF] p-2.5 sm:p-3.5 rounded-2xl shadow-sm space-y-2.5 max-w-full overflow-hidden"
     >
-      {/* 1. Quick Triad Row: Yesterday | Today | Tomorrow */}
+      {/* 1. Quick Triad Row: Yesterday | Today | Tomorrow (Prefetched for Instant Switching) */}
       <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
-        <button
-          onClick={() => router.push(`/${locale}/calendar/${yesterdayDate}`)}
-          type="button"
-          className={`min-h-[42px] sm:min-h-[44px] py-1.5 sm:py-2 px-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer text-center truncate active:scale-95 touch-manipulation select-none ${
+        <Link
+          href={`/${locale}/calendar/${yesterdayDate}`}
+          prefetch={true}
+          className={`min-h-[42px] sm:min-h-[44px] py-1.5 sm:py-2 px-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer text-center truncate active:scale-95 touch-manipulation select-none flex items-center justify-center ${
             isYesterday
               ? 'bg-[#8B1515] text-white shadow-xs'
               : 'bg-[#FFF9F0] text-[#700C0C] border border-[#EBDCCF] hover:bg-[#8B1515] hover:text-white'
           }`}
         >
           {isTa ? 'நேற்று' : 'Yesterday'}
-        </button>
+        </Link>
 
-        <button
-          onClick={handleTodayClick}
-          type="button"
+        <Link
+          href={`/${locale}/calendar/${todayDate}`}
+          prefetch={true}
           aria-label={isTa ? 'இன்றைய காலண்டர்' : "Today's Calendar"}
           className={`min-h-[42px] sm:min-h-[44px] py-1.5 sm:py-2 px-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer text-center truncate flex items-center justify-center space-x-1 active:scale-95 touch-manipulation select-none ${
             isToday
@@ -71,33 +70,33 @@ export const DateSelector: React.FC<DateSelectorProps> = ({ currentDateStr, loca
         >
           <Sparkles className="w-3.5 h-3.5 shrink-0 text-[#FFD700]" />
           <span>{isTa ? 'இன்று' : 'Today'}</span>
-        </button>
+        </Link>
 
-        <button
-          onClick={() => router.push(`/${locale}/calendar/${tomorrowDate}`)}
-          type="button"
-          className={`min-h-[42px] sm:min-h-[44px] py-1.5 sm:py-2 px-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer text-center truncate active:scale-95 touch-manipulation select-none ${
+        <Link
+          href={`/${locale}/calendar/${tomorrowDate}`}
+          prefetch={true}
+          className={`min-h-[42px] sm:min-h-[44px] py-1.5 sm:py-2 px-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer text-center truncate active:scale-95 touch-manipulation select-none flex items-center justify-center ${
             isTomorrow
               ? 'bg-[#8B1515] text-white shadow-xs'
               : 'bg-[#FFF9F0] text-[#700C0C] border border-[#EBDCCF] hover:bg-[#8B1515] hover:text-white'
           }`}
         >
           {isTa ? 'நாளை' : 'Tomorrow'}
-        </button>
+        </Link>
       </div>
 
-      {/* 2. Stepper & Custom Date Picker Row */}
+      {/* 2. Stepper & Custom Date Picker Row (Prefetched Previous & Next Day) */}
       <div className="flex items-center justify-between gap-1.5 sm:gap-3">
         {/* Previous Day Stepper */}
-        <button
-          onClick={() => router.push(`/${locale}/calendar/${prevDate}`)}
-          type="button"
-          className="flex items-center justify-center space-x-1 px-2.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-[#FFF9F0] text-[#8B1515] hover:bg-[#8B1515] hover:text-white transition-all shadow-xs border border-[#EBDCCF] shrink-0 cursor-pointer"
+        <Link
+          href={`/${locale}/calendar/${prevDate}`}
+          prefetch={true}
+          className="flex items-center justify-center space-x-1 px-2.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-[#FFF9F0] text-[#8B1515] hover:bg-[#8B1515] hover:text-white transition-all shadow-xs border border-[#EBDCCF] shrink-0 cursor-pointer active:scale-95 touch-manipulation select-none min-h-[38px]"
           aria-label={`${dict.prevDay}: ${prevDate}`}
         >
           <ChevronLeft className="w-4 h-4 shrink-0" />
           <span className="hidden xs:inline">{dict.prevDay}</span>
-        </button>
+        </Link>
 
         {/* Center: HTML5 Date Picker */}
         <div className="relative flex-1 max-w-[240px] flex items-center justify-center">
@@ -109,20 +108,22 @@ export const DateSelector: React.FC<DateSelectorProps> = ({ currentDateStr, loca
             max="2027-12-31"
             onChange={handleDateChange}
             aria-label={dict.selectDate}
-            className="w-full pl-8 sm:pl-9 pr-2 py-1.5 sm:py-2 text-xs sm:text-sm font-extrabold rounded-xl border-2 border-[#EBDCCF] bg-[#FFFBF5] text-[#1F1517] focus:border-[#8B1515] focus:outline-none cursor-pointer shadow-xs text-center"
+            className={`w-full pl-8 sm:pl-9 pr-2 py-1.5 sm:py-2 text-xs sm:text-sm font-extrabold rounded-xl border-2 border-[#EBDCCF] bg-[#FFFBF5] text-[#1F1517] focus:border-[#8B1515] focus:outline-none cursor-pointer shadow-xs text-center ${
+              isPending ? 'opacity-60 animate-pulse' : ''
+            }`}
           />
         </div>
 
         {/* Next Day Stepper */}
-        <button
-          onClick={() => router.push(`/${locale}/calendar/${nextDate}`)}
-          type="button"
-          className="flex items-center justify-center space-x-1 px-2.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-[#FFF9F0] text-[#8B1515] hover:bg-[#8B1515] hover:text-white transition-all shadow-xs border border-[#EBDCCF] shrink-0 cursor-pointer"
+        <Link
+          href={`/${locale}/calendar/${nextDate}`}
+          prefetch={true}
+          className="flex items-center justify-center space-x-1 px-2.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-[#FFF9F0] text-[#8B1515] hover:bg-[#8B1515] hover:text-white transition-all shadow-xs border border-[#EBDCCF] shrink-0 cursor-pointer active:scale-95 touch-manipulation select-none min-h-[38px]"
           aria-label={`${dict.nextDay}: ${nextDate}`}
         >
           <span className="hidden xs:inline">{dict.nextDay}</span>
           <ChevronRight className="w-4 h-4 shrink-0" />
-        </button>
+        </Link>
       </div>
     </nav>
   );
