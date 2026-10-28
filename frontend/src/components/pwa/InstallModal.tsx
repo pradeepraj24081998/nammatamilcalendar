@@ -10,10 +10,10 @@ interface InstallModalProps {
 }
 
 export const InstallModal: React.FC<InstallModalProps> = ({ locale = 'ta' }) => {
-  const { showInstallModal, setShowInstallModal, triggerInstall, isIOS, isInstalled, deferredPrompt } = usePWA();
+  const { showInstallModal, setShowInstallModal, triggerInstall, isIOS, isInstalled, isMobileOrTablet, deferredPrompt } = usePWA();
 
-  // If already installed or closed, don't show
-  if (!showInstallModal || isInstalled) {
+  // If already installed, closed, or on PC/large screen -> do NOT show
+  if (!showInstallModal || isInstalled || !isMobileOrTablet) {
     return null;
   }
 

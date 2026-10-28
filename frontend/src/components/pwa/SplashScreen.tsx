@@ -16,6 +16,18 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   const [fading, setFading] = useState<boolean>(false);
 
   useEffect(() => {
+    // Only display splash screen on Mobile or Tablet devices or standalone PWA
+    const ua = window.navigator.userAgent.toLowerCase();
+    const isMobileUA = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i.test(ua);
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const isSmallScreen = window.innerWidth <= 1024;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as unknown as { standalone?: boolean }).standalone;
+
+    if (!isMobileUA && !(isTouchDevice && isSmallScreen) && !isStandalone) {
+      setVisible(false);
+      return;
+    }
+
     // Check if splash was already shown this session
     const hasShown = sessionStorage.getItem('ntc_splash_shown');
     if (hasShown) {
@@ -70,7 +82,6 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                 sizes="(max-width: 640px) 192px, 256px"
                 className="object-cover object-center"
                 priority
-                quality={100}
               />
             </div>
           </div>

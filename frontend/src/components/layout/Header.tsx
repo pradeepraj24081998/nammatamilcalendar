@@ -97,18 +97,6 @@ export const Header: React.FC<HeaderProps> = ({ locale }) => {
                 })}
               </nav>
 
-              {/* Install App Button on Desktop & Tablet */}
-              {!isInstalled && (
-                <button
-                  onClick={() => setShowInstallModal(true)}
-                  className="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-black bg-gradient-to-r from-[#FFD700] via-[#FFA000] to-[#FF8F00] text-[#700C0C] shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer shrink-0 ring-1 ring-white/30"
-                  title={isTa ? 'செயலியை நிறுவுக' : 'Install App'}
-                >
-                  <Download className="w-3.5 h-3.5 stroke-[2.5]" />
-                  <span>{isTa ? 'ஆப் நிறுவுக' : 'Install App'}</span>
-                </button>
-              )}
-
               {/* Language Toggle */}
               <LanguageToggle currentLocale={locale} />
 
