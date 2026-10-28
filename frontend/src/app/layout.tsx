@@ -76,8 +76,20 @@ export default function RootLayout({
   const gaId = process.env.NEXT_PUBLIC_GA_ID || 'G-M13SQ1FV69';
 
   return (
-    <html lang="ta" suppressHydrationWarning>
+    <html lang="ta" className="light" style={{ colorScheme: 'light' }} suppressHydrationWarning>
       <head>
+        <meta name="color-scheme" content="light" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.style.colorScheme = 'light';
+                localStorage.removeItem('ntc-theme');
+              } catch(e) {}
+            `,
+          }}
+        />
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-startup-image" href="/images/splash_mobile.jpg" />
         <meta name="mobile-web-app-capable" content="yes" />

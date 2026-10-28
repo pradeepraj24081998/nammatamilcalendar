@@ -57,7 +57,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ locale }) => {
     <nav
       id="mobile-bottom-navigation"
       aria-label={isTa ? 'கீழ் வழிசெலுத்தல்' : 'Bottom Navigation'}
-      className="xl:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#1E1113]/95 backdrop-blur-md border-t border-[#EBDCCF] dark:border-[#3D2529] shadow-[0_-4px_25px_rgba(139,21,21,0.08)] transition-all"
+      className="xl:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#EBDCCF] shadow-[0_-4px_25px_rgba(139,21,21,0.08)] transition-all"
       style={{
         paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.35rem)',
       }}
@@ -71,15 +71,15 @@ export const BottomNav: React.FC<BottomNavProps> = ({ locale }) => {
               href={item.href}
               className={`flex flex-col items-center justify-center py-1 px-1 rounded-xl transition-all relative ${
                 item.isActive
-                  ? 'text-[#8B1515] dark:text-[#FFD700] font-black'
-                  : 'text-gray-500 dark:text-gray-400 hover:text-[#8B1515] dark:hover:text-[#FFD700]'
+                  ? 'text-[#8B1515] font-black'
+                  : 'text-gray-500 hover:text-[#8B1515]'
               }`}
             >
               <div
                 className={`relative flex items-center justify-center p-1 rounded-xl transition-all ${
                   item.isActive
-                    ? 'bg-[#8B1515]/10 dark:bg-[#FFD700]/15 scale-110'
-                    : 'hover:bg-black/5 dark:hover:bg-white/5'
+                    ? 'bg-[#8B1515]/10 scale-110'
+                    : 'hover:bg-black/5'
                 }`}
               >
                 <Icon className="w-5 h-5 shrink-0" />
@@ -98,7 +98,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ locale }) => {
         {!isInstalled ? (
           <button
             onClick={() => setShowInstallModal(true)}
-            className="flex flex-col items-center justify-center py-1 px-1 rounded-xl transition-all text-[#8B1515] dark:text-[#FFD700] relative cursor-pointer group"
+            className="flex flex-col items-center justify-center py-1 px-1 rounded-xl transition-all text-[#8B1515] relative cursor-pointer group"
             aria-label={isTa ? 'ஆப் நிறுவுதல்' : 'Install App'}
           >
             <div className="relative flex items-center justify-center p-1 rounded-xl bg-gradient-to-tr from-[#FFD700] via-[#FFA000] to-[#E67E22] text-[#700C0C] shadow-xs group-hover:scale-110 transition-transform">
@@ -108,7 +108,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ locale }) => {
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600" />
               </span>
             </div>
-            <span className="text-[10px] sm:text-[11px] font-black leading-tight tracking-tight mt-0.5 text-[#700C0C] dark:text-[#FFD700] truncate max-w-full">
+            <span className="text-[10px] sm:text-[11px] font-black leading-tight tracking-tight mt-0.5 text-[#700C0C] truncate max-w-full">
               {isTa ? 'நிறுவு' : 'Install'}
             </span>
           </button>
@@ -117,15 +117,15 @@ export const BottomNav: React.FC<BottomNavProps> = ({ locale }) => {
             href={`/${locale}/calendar/year/${activeYear}`}
             className={`flex flex-col items-center justify-center py-1 px-1 rounded-xl transition-all relative ${
               pathname.includes('/calendar/year')
-                ? 'text-[#8B1515] dark:text-[#FFD700] font-black'
-                : 'text-gray-500 dark:text-gray-400 hover:text-[#8B1515] dark:hover:text-[#FFD700]'
+                ? 'text-[#8B1515] font-black'
+                : 'text-gray-500 hover:text-[#8B1515]'
             }`}
           >
             <div
               className={`relative flex items-center justify-center p-1 rounded-xl transition-all ${
                 pathname.includes('/calendar/year')
-                  ? 'bg-[#8B1515]/10 dark:bg-[#FFD700]/15 scale-110'
-                  : 'hover:bg-black/5 dark:hover:bg-white/5'
+                  ? 'bg-[#8B1515]/10 scale-110'
+                  : 'hover:bg-black/5'
               }`}
             >
               <Clock className="w-5 h-5 shrink-0" />

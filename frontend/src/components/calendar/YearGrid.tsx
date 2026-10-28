@@ -80,38 +80,38 @@ export const YearGrid: React.FC<YearGridProps> = ({ yearData, locale }) => {
             <Link
               key={m.month}
               href={`/${locale}/calendar/month/${year}/${m.month}`}
-              className="bg-white dark:bg-[#1D1418] border-2 border-[#EBDCCF] dark:border-[#38242A] p-5 rounded-3xl hover:border-[#8B1515] hover:shadow-lg transition-all group flex flex-col justify-between"
+              className="bg-white border-2 border-[#EBDCCF] p-5 rounded-3xl hover:border-[#8B1515] hover:shadow-lg transition-all group flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between border-b-2 border-[#EBDCCF] dark:border-[#38242A] pb-3">
-                  <h2 className="text-xl font-black text-[#8B1515] dark:text-[#FFD700] group-hover:text-[#C93B2B] transition-colors">
+                <div className="flex items-center justify-between border-b-2 border-[#EBDCCF] pb-3">
+                  <h2 className="text-xl font-black text-[#8B1515] group-hover:text-[#C93B2B] transition-colors">
                     {monthName}
                   </h2>
-                  <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#FFFDF8] dark:bg-[#150E11] text-[#8B1515] dark:text-[#FFD700] border border-[#EBDCCF] dark:border-[#38242A]">
+                  <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#FFFDF8] text-[#8B1515] border border-[#EBDCCF]">
                     {m.days_count} {locale === 'ta' ? 'நாட்கள்' : 'Days'}
                   </span>
                 </div>
 
                 <div className="mt-4 space-y-2 text-xs">
-                  <div className="flex justify-between items-center p-2 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50">
-                    <span className="flex items-center space-x-1.5 font-bold text-amber-800 dark:text-amber-300">
+                  <div className="flex justify-between items-center p-2 rounded-xl bg-amber-50 border border-amber-200">
+                    <span className="flex items-center space-x-1.5 font-bold text-amber-800">
                       <Sparkles className="w-3.5 h-3.5" />
                       <span>{dict.muhurthamDayBadge}</span>
                     </span>
-                    <span className="font-black text-sm text-amber-900 dark:text-amber-200">{m.muhurtham_count}</span>
+                    <span className="font-black text-sm text-amber-900">{m.muhurtham_count}</span>
                   </div>
 
-                  <div className="flex justify-between items-center p-2 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50">
-                    <span className="flex items-center space-x-1.5 font-bold text-rose-800 dark:text-rose-300">
+                  <div className="flex justify-between items-center p-2 rounded-xl bg-rose-50 border border-rose-200">
+                    <span className="flex items-center space-x-1.5 font-bold text-rose-800">
                       <Calendar className="w-3.5 h-3.5" />
                       <span>{dict.festivals}</span>
                     </span>
-                    <span className="font-black text-sm text-rose-900 dark:text-rose-200">{m.festivals_count}</span>
+                    <span className="font-black text-sm text-rose-900">{m.festivals_count}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-5 pt-3 border-t border-[#EBDCCF]/60 dark:border-[#38242A]/60 flex items-center justify-between text-xs font-black text-[#8B1515] dark:text-[#FFD700]">
+              <div className="mt-5 pt-3 border-t border-[#EBDCCF]/60 flex items-center justify-between text-xs font-black text-[#8B1515]">
                 <span>{locale === 'ta' ? 'மாதாந்திர காலண்டர் திறக்க' : 'Open Month Sheet'}</span>
                 <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
               </div>

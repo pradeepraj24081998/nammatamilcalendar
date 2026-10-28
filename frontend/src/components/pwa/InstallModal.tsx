@@ -46,7 +46,7 @@ export const InstallModal: React.FC<InstallModalProps> = ({ locale = 'ta' }) => 
       <div className="absolute inset-0" onClick={handleClose} />
 
       {/* Main Dialog Card */}
-      <div className="relative w-full max-w-md bg-gradient-to-b from-[#FFFDF9] to-[#FFF5E6] dark:from-[#261417] dark:to-[#170C0E] rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] border-2 border-[#D4AF37] overflow-hidden z-10 animate-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-md bg-gradient-to-b from-[#FFFDF9] to-[#FFF5E6] rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] border-2 border-[#D4AF37] overflow-hidden z-10 animate-in zoom-in-95 duration-200">
         
         {/* Top Auspicious Gold Bar */}
         <div className="h-2 w-full bg-gradient-to-r from-[#D4AF37] via-[#FFD700] to-[#E67E22]" />
@@ -54,7 +54,7 @@ export const InstallModal: React.FC<InstallModalProps> = ({ locale = 'ta' }) => 
         {/* Close Button */}
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 p-1.5 rounded-full bg-black/5 dark:bg-white/10 text-gray-500 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition-colors cursor-pointer"
+          className="absolute top-4 right-4 p-1.5 rounded-full bg-black/5 text-gray-500 hover:text-gray-800 transition-colors cursor-pointer"
           aria-label={isTa ? 'மூடு' : 'Close'}
         >
           <X className="w-5 h-5" />
@@ -79,19 +79,19 @@ export const InstallModal: React.FC<InstallModalProps> = ({ locale = 'ta' }) => 
           </div>
 
           {/* Title & Urgent Recommendation */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#8B1515]/10 dark:bg-[#FFD700]/15 text-[#8B1515] dark:text-[#FFD700] text-xs font-black tracking-wide mb-2 uppercase">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#8B1515]/10 text-[#8B1515] text-xs font-black tracking-wide mb-2 uppercase">
             <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
             <span>{isTa ? 'அதிகாரப்பூர்வ செயலி' : 'Official Web App'}</span>
           </div>
 
           <h2
             id="install-modal-title"
-            className="text-xl sm:text-2xl font-black text-[#700C0C] dark:text-[#FFF8E7] leading-tight"
+            className="text-xl sm:text-2xl font-black text-[#700C0C] leading-tight"
           >
             {isTa ? 'நம்ம தமிழ் காலண்டர் செயலியை இன்ஸ்டால் செய்யவும்!' : 'Install Namma Tamil Calendar App!'}
           </h2>
 
-          <p className="mt-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p className="mt-2 text-xs sm:text-sm text-gray-600 leading-relaxed">
             {isTa
               ? 'தினசரி நல்ல நேரம், ராகு காலம், எமகண்டம் மற்றும் ராசிபலன்களை நொடியில் பெற ஆப்பை உங்கள் மொபைலில் Install செய்யவும்.'
               : 'Get instant 1-tap access to daily panchangam, auspicious timings, and horoscopes directly on your device.'}
@@ -99,38 +99,38 @@ export const InstallModal: React.FC<InstallModalProps> = ({ locale = 'ta' }) => 
 
           {/* Feature Highlights Grid */}
           <div className="my-5 grid grid-cols-2 gap-2 text-left">
-            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-white/5 border border-[#EBDCCF] dark:border-white/10 shadow-xs">
-              <div className="p-1.5 rounded-lg bg-[#8B1515]/10 dark:bg-[#FFD700]/20 text-[#8B1515] dark:text-[#FFD700] shrink-0">
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-[#EBDCCF] shadow-xs">
+              <div className="p-1.5 rounded-lg bg-[#8B1515]/10 text-[#8B1515] shrink-0">
                 <Zap className="w-4 h-4" />
               </div>
-              <div className="text-[11px] leading-tight font-bold text-gray-800 dark:text-gray-200">
+              <div className="text-[11px] leading-tight font-bold text-gray-800">
                 {isTa ? '1 நொடி அதிவேகம்' : 'Instant Launch'}
               </div>
             </div>
 
-            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-white/5 border border-[#EBDCCF] dark:border-white/10 shadow-xs">
-              <div className="p-1.5 rounded-lg bg-[#8B1515]/10 dark:bg-[#FFD700]/20 text-[#8B1515] dark:text-[#FFD700] shrink-0">
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-[#EBDCCF] shadow-xs">
+              <div className="p-1.5 rounded-lg bg-[#8B1515]/10 text-[#8B1515] shrink-0">
                 <WifiOff className="w-4 h-4" />
               </div>
-              <div className="text-[11px] leading-tight font-bold text-gray-800 dark:text-gray-200">
+              <div className="text-[11px] leading-tight font-bold text-gray-800">
                 {isTa ? 'ஆஃப்லைன் வசதி' : 'Works Offline'}
               </div>
             </div>
 
-            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-white/5 border border-[#EBDCCF] dark:border-white/10 shadow-xs">
-              <div className="p-1.5 rounded-lg bg-[#8B1515]/10 dark:bg-[#FFD700]/20 text-[#8B1515] dark:text-[#FFD700] shrink-0">
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-[#EBDCCF] shadow-xs">
+              <div className="p-1.5 rounded-lg bg-[#8B1515]/10 text-[#8B1515] shrink-0">
                 <Bell className="w-4 h-4" />
               </div>
-              <div className="text-[11px] leading-tight font-bold text-gray-800 dark:text-gray-200">
+              <div className="text-[11px] leading-tight font-bold text-gray-800">
                 {isTa ? 'நல்ல நேர விவரம்' : 'Auspicious Timings'}
               </div>
             </div>
 
-            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-white/5 border border-[#EBDCCF] dark:border-white/10 shadow-xs">
-              <div className="p-1.5 rounded-lg bg-[#8B1515]/10 dark:bg-[#FFD700]/20 text-[#8B1515] dark:text-[#FFD700] shrink-0">
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-[#EBDCCF] shadow-xs">
+              <div className="p-1.5 rounded-lg bg-[#8B1515]/10 text-[#8B1515] shrink-0">
                 <Sparkles className="w-4 h-4" />
               </div>
-              <div className="text-[11px] leading-tight font-bold text-gray-800 dark:text-gray-200">
+              <div className="text-[11px] leading-tight font-bold text-gray-800">
                 {isTa ? 'குறைந்த அளவு (<3MB)' : 'Ultra Light (<3MB)'}
               </div>
             </div>
@@ -140,11 +140,11 @@ export const InstallModal: React.FC<InstallModalProps> = ({ locale = 'ta' }) => 
           {isIOS ? (
             /* iOS Safari Step-by-Step Instructions */
             <div className="space-y-3">
-              <div className="p-3.5 rounded-2xl bg-[#FFF1D6] dark:bg-[#3D2517] border border-[#FFD700]/40 text-left space-y-2">
-                <p className="text-xs font-bold text-[#700C0C] dark:text-[#FFD700]">
+              <div className="p-3.5 rounded-2xl bg-[#FFF1D6] border border-[#FFD700]/40 text-left space-y-2">
+                <p className="text-xs font-bold text-[#700C0C]">
                   {isTa ? 'iPhone / iPad-ல் நிறுவுவது எப்படி?' : 'How to install on iPhone / iPad:'}
                 </p>
-                <div className="flex items-start gap-2.5 text-xs text-gray-700 dark:text-gray-200">
+                <div className="flex items-start gap-2.5 text-xs text-gray-700">
                   <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#8B1515] text-white text-[10px] font-bold shrink-0 mt-0.5">1</span>
                   <span>
                     {isTa ? (
@@ -154,7 +154,7 @@ export const InstallModal: React.FC<InstallModalProps> = ({ locale = 'ta' }) => 
                     )}
                   </span>
                 </div>
-                <div className="flex items-start gap-2.5 text-xs text-gray-700 dark:text-gray-200">
+                <div className="flex items-start gap-2.5 text-xs text-gray-700">
                   <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#8B1515] text-white text-[10px] font-bold shrink-0 mt-0.5">2</span>
                   <span>
                     {isTa ? (
@@ -186,7 +186,7 @@ export const InstallModal: React.FC<InstallModalProps> = ({ locale = 'ta' }) => 
 
               <button
                 onClick={handleClose}
-                className="text-xs text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 py-1 transition-colors cursor-pointer"
+                className="text-xs text-gray-500 hover:text-gray-800 py-1 transition-colors cursor-pointer"
               >
                 {isTa ? 'பிறகு செய்கிறேன் (இணையதளத்தில் தொடரவும்)' : 'Maybe Later (Continue in Browser)'}
               </button>

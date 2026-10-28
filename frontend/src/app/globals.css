@@ -1,39 +1,41 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --bg-page: #FFFBF5;
-    --bg-card: #FFFFFF;
-    --text-primary: #1F1517;
-    --text-muted: #5C5256;
-    --border-color: #EBDCCF;
-    --om-crimson: #8B1515;
-    --om-maroon: #981414;
-    --om-vermilion: #C93B2B;
-    --om-gold: #D4AF37;
-    --om-saffron: #E67E22;
-    --auspicious-green: #15803D;
-    --warning-red: #B91C1C;
-    --shadow-soft: 0 4px 20px -2px rgba(139, 21, 21, 0.08);
-  }
+/* Force light theme always - disable dark theme even if user device has dark theme on */
+@variant dark (&:where([data-never-dark-mode]));
 
+:root {
+  color-scheme: light !important;
+  --bg-page: #FFFBF5;
+  --bg-card: #FFFFFF;
+  --text-primary: #1F1517;
+  --text-muted: #5C5256;
+  --border-color: #EBDCCF;
+  --om-crimson: #8B1515;
+  --om-maroon: #981414;
+  --om-vermilion: #C93B2B;
+  --om-gold: #D4AF37;
+  --om-saffron: #E67E22;
+  --auspicious-green: #15803D;
+  --warning-red: #B91C1C;
+  --shadow-soft: 0 4px 20px -2px rgba(139, 21, 21, 0.08);
 }
 
 html {
+  color-scheme: light !important;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
 body {
+  color-scheme: light !important;
   overflow-x: hidden;
   max-width: 100vw;
-  background-color: var(--bg-page);
-  color: var(--text-primary);
+  background-color: #FFFBF5 !important;
+  color: #1F1517 !important;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Tamil', sans-serif;
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* Authentic Tamil Calendar Sheet Frame */
