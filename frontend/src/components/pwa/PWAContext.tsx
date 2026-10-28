@@ -56,7 +56,7 @@ export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const mobileOrTablet = checkIsMobileOrTablet();
     setIsMobileOrTablet(mobileOrTablet);
 
-    // 2. Detect if ACTUALLY running as the installed mobile application (Standalone mode)
+    // 2. Detect if currently running as standalone app (opened from Home Screen)
     const checkIsRunningStandalone = () => {
       if (typeof window === 'undefined') return false;
       const isStandaloneMedia = window.matchMedia('(display-mode: standalone)').matches;
@@ -71,15 +71,48 @@ export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       );
     };
 
-    const runningAsApp = checkIsRunningStandalone();
-    setIsInstalled(runningAsApp);
+    // 3. Detect if the app was ALREADY installed previously on this device
+    const checkIsAlreadyInstalled = () => {
+      if (typeof window === 'undefined') return false;
+      const stored = localStorage.getItem('ntc_app_already_installed') === 'true';
+      const cookie = document.cookie.includes('ntc_app_already_installed=true');
+      return stored || cookie;
+    };
 
-    // 3. Detect iOS Safari
+    const runningAsApp = checkIsRunningStandalone();
+    const alreadyInstalledOnDevice = checkIsAlreadyInstalled();
+
+    // If currently running in standalone mode, record permanent installation on device
+    if (runningAsApp) {
+      localStorage.setItem('ntc_app_already_installed', 'true');
+      document.cookie = 'ntc_app_already_installed=true; max-age=31536000; path=/; SameSite=Lax';
+    }
+
+    const hasApp = runningAsApp || alreadyInstalledOnDevice;
+    setIsInstalled(hasApp);
+
+    // 4. Native Chrome/Android getInstalledRelatedApps() check
+    // If the browser knows the PWA is installed, NEVER show install popup in browser!
+    if (typeof navigator !== 'undefined' && 'getInstalledRelatedApps' in navigator) {
+      (navigator as unknown as { getInstalledRelatedApps: () => Promise<unknown[]> })
+        .getInstalledRelatedApps()
+        .then((apps) => {
+          if (apps && apps.length > 0) {
+            setIsInstalled(true);
+            setShowInstallModal(false);
+            localStorage.setItem('ntc_app_already_installed', 'true');
+            document.cookie = 'ntc_app_already_installed=true; max-age=31536000; path=/; SameSite=Lax';
+          }
+        })
+        .catch(() => {});
+    }
+
+    // 5. Detect iOS Safari
     const ua = window.navigator.userAgent.toLowerCase();
     const isIOSDevice = /iphone|ipad|ipod/.test(ua) && !(window as unknown as { MSStream?: unknown }).MSStream;
     setIsIOS(isIOSDevice);
 
-    // 4. Register Service Worker
+    // 6. Register Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker
@@ -102,7 +135,7 @@ export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       });
     }
 
-    // 5. Capture native beforeinstallprompt
+    // 7. Capture native beforeinstallprompt
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
@@ -110,23 +143,29 @@ export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
-    // 6. Track app installed event
+    // 8. Track app installed event (fires when user completes installation)
     const handleAppInstalled = () => {
       setIsInstalled(true);
       setShowInstallModal(false);
+      localStorage.setItem('ntc_app_already_installed', 'true');
+      document.cookie = 'ntc_app_already_installed=true; max-age=31536000; path=/; SameSite=Lax';
       setDeferredPrompt(null);
     };
 
     window.addEventListener('appinstalled', handleAppInstalled);
 
-    // 7. INSTALL POPUP LOGIC:
-    // - If running inside the installed mobile application (standalone): NEVER show popup!
-    // - If on mobile/tablet browser (NOT installed): ALWAYS show install popup screen!
-    if (mobileOrTablet && !runningAsApp) {
-      // Small delay of 1.4s so splash screen animation finishes smoothly first
+    // 9. INSTALL POPUP LOGIC:
+    // ONLY show popup if:
+    // 1) User is on mobile or tablet
+    // 2) The app is NOT running as standalone
+    // 3) The app is NOT ALREADY INSTALLED on this device
+    if (mobileOrTablet && !hasApp) {
       const timer = setTimeout(() => {
-        setShowInstallModal(true);
-      }, 1400);
+        const currentInstalled = localStorage.getItem('ntc_app_already_installed') === 'true';
+        if (!currentInstalled) {
+          setShowInstallModal(true);
+        }
+      }, 1600);
 
       return () => {
         clearTimeout(timer);
@@ -149,6 +188,8 @@ export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (choiceResult.outcome === 'accepted') {
           setIsInstalled(true);
           setShowInstallModal(false);
+          localStorage.setItem('ntc_app_already_installed', 'true');
+          document.cookie = 'ntc_app_already_installed=true; max-age=31536000; path=/; SameSite=Lax';
         }
         setDeferredPrompt(null);
       } catch (err) {
