@@ -1,5 +1,17 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
+import { PWAProvider } from '@/components/pwa/PWAContext';
+import { SplashScreen } from '@/components/pwa/SplashScreen';
+import { InstallModal } from '@/components/pwa/InstallModal';
 import './globals.css';
+
+export const viewport: Viewport = {
+  themeColor: '#8B1515',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: 'cover',
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://nammatamilcalendar.in'),
@@ -22,13 +34,27 @@ export const metadata: Metadata = {
     'Tamil Festivals',
     'Rasipalan',
   ],
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'தமிழ் காலண்டர்',
+  },
+  formatDetection: {
+    telephone: false,
+  },
   icons: {
     icon: [
+      { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
       { url: '/icon.svg', type: 'image/svg+xml' },
       { url: '/favicon.svg', type: 'image/svg+xml' },
     ],
-    shortcut: '/icon.svg',
-    apple: '/icon.svg',
+    shortcut: '/icons/icon-192x192.png',
+    apple: [
+      { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
   authors: [{ name: 'Namma Tamil Calendar' }],
   creator: 'Namma Tamil Calendar',
@@ -39,8 +65,6 @@ export const metadata: Metadata = {
     siteName: 'Namma Tamil Calendar',
   },
 };
-
-import Script from 'next/script';
 
 export default function RootLayout({
   children,
@@ -54,6 +78,13 @@ export default function RootLayout({
   return (
     <html lang="ta" suppressHydrationWarning>
       <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-startup-image" href="/images/splash_mobile.jpg" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="theme-color" content="#8B1515" />
+
         {/* Google AdSense */}
         <Script
           id="google-adsense"
@@ -80,8 +111,13 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="antialiased selection:bg-[#70263B] selection:text-white">
-        {children}
+        <PWAProvider>
+          <SplashScreen />
+          <InstallModal />
+          {children}
+        </PWAProvider>
       </body>
     </html>
   );
 }
+

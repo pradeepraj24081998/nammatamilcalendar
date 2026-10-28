@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ஆஃப்லைன் பயன்முறை | Namma Tamil Calendar</title>
+  <meta name="theme-color" content="#8B1515">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Tamil', sans-serif;
+      background: #8B1515;
+      color: #FFF8E7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1.5px solid rgba(255, 215, 0, 0.35);
+      border-radius: 1.5rem;
+      padding: 2rem 1.5rem;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+    }
+    .icon-container {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 1.25rem;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, #FFD700, #FFA000);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .icon-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #FFD700;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+    p {
+      font-size: 0.95rem;
+      color: #FFF2D6;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      opacity: 0.95;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.85rem 1.5rem;
+      background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
+      color: #700C0C;
+      font-weight: 800;
+      font-size: 1rem;
+      border-radius: 0.85rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+    .btn:active {
+      transform: scale(0.98);
+      filter: brightness(0.95);
+    }
+    .sub-note {
+      margin-top: 1.25rem;
+      font-size: 0.78rem;
+      color: #FFE5B4;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon-container">
+      <img src="/icons/icon-192x192.png" alt="Namma Tamil Calendar">
+    </div>
+    <h1>இணைய இணைப்பு இல்லை</h1>
+    <p>
+      நீங்கள் தற்போது ஆஃப்லைனில் உள்ளீர்கள். உங்கள் சாதனத்தில் முன்பே சேமிக்கப்பட்ட காலண்டர் பக்கங்களை நீங்கள் தொடர்ந்து பார்வையிடலாம்.
+    </p>
+    <button class="btn" onclick="window.location.reload()">
+      🔄 மீண்டும் முயற்சிக்கவும்
+    </button>
+    <div class="sub-note">
+      You are offline. Reconnect to load live updates.
+    </div>
+  </div>
+</body>
+</html>

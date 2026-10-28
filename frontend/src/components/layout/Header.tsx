@@ -4,11 +4,12 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Calendar, Menu, X, Sparkles, Clock, Compass, Heart, PhoneCall } from 'lucide-react';
+import { Calendar, Menu, X, Sparkles, Clock, Compass, Heart, PhoneCall, Download } from 'lucide-react';
 import { Locale } from '@/lib/types';
 import { getDictionary } from '@/lib/i18n';
 import { LanguageToggle } from '../ui/LanguageToggle';
 import { getISTCurrentYearAndMonth } from '@/lib/dateUtils';
+import { usePWA } from '@/components/pwa/PWAContext';
 
 interface HeaderProps {
   locale: Locale;
@@ -18,6 +19,7 @@ export const Header: React.FC<HeaderProps> = ({ locale }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const dict = getDictionary(locale);
+  const { isInstalled, setShowInstallModal } = usePWA();
 
   const isTa = locale === 'ta';
 
@@ -95,6 +97,18 @@ export const Header: React.FC<HeaderProps> = ({ locale }) => {
                 })}
               </nav>
 
+              {/* Install App Button on Desktop & Tablet */}
+              {!isInstalled && (
+                <button
+                  onClick={() => setShowInstallModal(true)}
+                  className="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-black bg-gradient-to-r from-[#FFD700] via-[#FFA000] to-[#FF8F00] text-[#700C0C] shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer shrink-0 ring-1 ring-white/30"
+                  title={isTa ? 'செயலியை நிறுவுக' : 'Install App'}
+                >
+                  <Download className="w-3.5 h-3.5 stroke-[2.5]" />
+                  <span>{isTa ? 'ஆப் நிறுவுக' : 'Install App'}</span>
+                </button>
+              )}
+
               {/* Language Toggle */}
               <LanguageToggle currentLocale={locale} />
 
@@ -114,7 +128,20 @@ export const Header: React.FC<HeaderProps> = ({ locale }) => {
 
       {/* Mobile Navigation Dropdown - Shown on screens < 1280px */}
       {mobileMenuOpen && (
-        <div className="xl:hidden bg-[#800C0C] text-white border-t border-white/15 px-4 pt-3 pb-6 space-y-1.5 shadow-2xl animate-in fade-in slide-in-from-top duration-200">
+        <div className="xl:hidden bg-[#800C0C] text-white border-t border-white/15 px-4 pt-3 pb-6 space-y-2 shadow-2xl animate-in fade-in slide-in-from-top duration-200">
+          {!isInstalled && (
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setShowInstallModal(true);
+              }}
+              className="w-full flex items-center justify-center space-x-2 px-3.5 py-2.5 rounded-xl text-sm font-black bg-gradient-to-r from-[#FFD700] via-[#FFA000] to-[#FF8F00] text-[#700C0C] shadow-md transition-all cursor-pointer mb-2"
+            >
+              <Download className="w-4 h-4 stroke-[2.5]" />
+              <span>{isTa ? 'நம்ம தமிழ் காலண்டர் ஆப் நிறுவுக' : 'Install Namma Tamil Calendar App'}</span>
+            </button>
+          )}
+
           {navLinks.map((link) => {
             const isActive = pathname === link.href || (link.href !== `/${locale}` && pathname.startsWith(link.href));
             const Icon = link.icon;
@@ -139,3 +166,4 @@ export const Header: React.FC<HeaderProps> = ({ locale }) => {
     </header>
   );
 };
+

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { BottomNav } from '@/components/layout/BottomNav';
 import { Locale } from '@/lib/types';
 
 export function generateStaticParams() {
@@ -31,16 +32,17 @@ export default async function LocaleLayout({
   };
 
   return (
-    <div className="flex flex-col min-h-screen overflow-x-hidden max-w-full">
+    <div className="flex flex-col min-h-screen overflow-x-hidden max-w-full relative">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrgJSONLD) }}
       />
       <Header locale={locale} />
-      <main className="flex-1 max-w-6xl w-full mx-auto px-2.5 xs:px-3 sm:px-6 lg:px-8 py-4 sm:py-8 overflow-x-hidden">
+      <main className="flex-1 max-w-6xl w-full mx-auto px-2.5 xs:px-3 sm:px-6 lg:px-8 py-4 sm:py-8 overflow-x-hidden pb-24 xl:pb-8">
         {children}
       </main>
       <Footer locale={locale} />
+      <BottomNav locale={locale} />
     </div>
   );
 }

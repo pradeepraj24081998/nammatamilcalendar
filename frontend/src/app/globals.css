@@ -98,3 +98,27 @@ body {
     animation: none;
   }
 }
+
+@keyframes progress {
+  0% {
+    width: 10%;
+    transform: translateX(0%);
+  }
+  50% {
+    width: 75%;
+    transform: translateX(25%);
+  }
+  100% {
+    width: 100%;
+    transform: translateX(0%);
+  }
+}
+
+/* Mobile Safe Area Insets for Edge-to-Edge display */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+}
+

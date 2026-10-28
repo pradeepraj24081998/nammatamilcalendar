@@ -1,0 +1,79 @@
+{
+  "id": "/?source=pwa",
+  "name": "நம்ம தமிழ் காலண்டர் | Namma Tamil Calendar",
+  "short_name": "தமிழ் காலண்டர்",
+  "description": "நாள்தோறும் துல்லியமான தமிழ் பஞ்சாங்கம், நல்ல நேரம், கௌரி நல்ல நேரம், ராகு காலம், எமகண்டம், தினசரி ராசிபலன் மற்றும் பண்டிகை விசேஷங்கள்.",
+  "start_url": "/ta?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "window-controls-overlay", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#8B1515",
+  "theme_color": "#8B1515",
+  "lang": "ta",
+  "dir": "ltr",
+  "categories": ["lifestyle", "utilities", "reference", "productivity"],
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "இன்றைய காலண்டர் (Today)",
+      "short_name": "இன்று",
+      "description": "இன்றைய பஞ்சாங்கம், நல்ல நேரம் மற்றும் ராசிபலன்",
+      "url": "/ta?source=shortcut",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "மாத காலண்டர் (Monthly)",
+      "short_name": "மாதம்",
+      "description": "முழு மாத நாட்காட்டி மற்றும் விசேஷங்கள்",
+      "url": "/ta/calendar?source=shortcut",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "சுப முகூர்த்த நாட்கள் (Muhurtham)",
+      "short_name": "முகூர்த்தம்",
+      "description": "திருமண மற்றும் சுப முகூர்த்த தினங்கள்",
+      "url": "/ta/muhurtham-dates?source=shortcut",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "பண்டிகைகள் (Festivals)",
+      "short_name": "பண்டிகைகள்",
+      "description": "தமிழ் பண்டிகைகள் & விரத தினங்கள்",
+      "url": "/ta/festivals?source=shortcut",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false
+}
