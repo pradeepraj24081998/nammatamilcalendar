@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nammatamilcalendar-v1';
+const CACHE_NAME = 'nammatamilcalendar-v2';
 const OFFLINE_URL = '/offline.html';
 
 const PRECACHE_ASSETS = [
@@ -13,7 +13,7 @@ const PRECACHE_ASSETS = [
   '/icons/icon-maskable-512x512.png',
   '/icons/apple-touch-icon.png',
   '/images/calendar_logo.png',
-  '/images/splash_emblem.jpg',
+  '/images/splash_emblem.png',
   '/images/splash_mobile.jpg',
 ];
 

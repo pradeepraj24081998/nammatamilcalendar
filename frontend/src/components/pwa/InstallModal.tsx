@@ -22,6 +22,12 @@ export const InstallModal: React.FC<InstallModalProps> = ({ locale = 'ta' }) => 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
       await triggerInstall();
+    } else {
+      alert(
+        isTa
+          ? 'உங்கள் உலாவியின் மெனுவில் (⋮) "Install app" அல்லது "Add to Home screen" என்பதைத் தேர்ந்தெடுக்கவும்.'
+          : 'Please tap your browser menu (⋮) and choose "Install app" or "Add to Home screen".'
+      );
     }
   };
 
@@ -61,11 +67,11 @@ export const InstallModal: React.FC<InstallModalProps> = ({ locale = 'ta' }) => 
             <div className="relative w-full h-full rounded-2xl p-1 bg-gradient-to-tr from-[#FFE082] via-[#FFD700] to-[#FF8F00] shadow-lg overflow-hidden">
               <div className="w-full h-full rounded-xl overflow-hidden relative bg-[#800C0C]">
                 <Image
-                  src="/images/splash_emblem.jpg"
+                  src="/images/splash_emblem.png"
                   alt="Namma Tamil Calendar Icon"
                   fill
                   sizes="88px"
-                  className="object-cover"
+                  className="object-contain"
                   priority
                 />
               </div>

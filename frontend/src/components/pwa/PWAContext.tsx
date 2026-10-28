@@ -43,32 +43,36 @@ export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [showInstallModal, setShowInstallModal] = useState<boolean>(false);
 
   useEffect(() => {
-    // 1. Detect if mobile or tablet device (NOT PC or large screen)
+    // 1. Detect if mobile or tablet device (NOT PC or desktop)
     const checkIsMobileOrTablet = () => {
       if (typeof window === 'undefined') return false;
       const ua = window.navigator.userAgent.toLowerCase();
       const isMobileUA = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i.test(ua);
-      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      const isSmallOrMediumScreen = window.innerWidth <= 1024;
-      return isMobileUA || (isTouchDevice && isSmallOrMediumScreen);
+      const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isNarrow = window.innerWidth <= 1024;
+      return isMobileUA || (isTouch && isNarrow);
     };
 
     const mobileOrTablet = checkIsMobileOrTablet();
     setIsMobileOrTablet(mobileOrTablet);
 
-    // 2. Detect if running in standalone (installed) mode
-    const checkInstalled = () => {
+    // 2. Detect if ACTUALLY running as the installed mobile application (Standalone mode)
+    const checkIsRunningStandalone = () => {
+      if (typeof window === 'undefined') return false;
       const isStandaloneMedia = window.matchMedia('(display-mode: standalone)').matches;
-      const isNavigatorStandalone = (window.navigator as unknown as { standalone?: boolean }).standalone === true;
-      const isUrlPWA = window.location.search.includes('source=pwa');
-      const isLocalInstalled = localStorage.getItem('ntc_pwa_installed') === 'true';
+      const isFullscreenMedia = window.matchMedia('(display-mode: fullscreen)').matches;
+      const isMinimalUiMedia = window.matchMedia('(display-mode: minimal-ui)').matches;
+      const isNavigatorStandalone = Boolean((window.navigator as unknown as { standalone?: boolean }).standalone);
+      const isUrlPWA = window.location.search.includes('source=pwa') || window.location.search.includes('source=shortcut');
+      const isAndroidApp = document.referrer.includes('android-app://');
 
-      const installed = Boolean(isStandaloneMedia || isNavigatorStandalone || isUrlPWA || isLocalInstalled);
-      setIsInstalled(installed);
-      return installed;
+      return Boolean(
+        isStandaloneMedia || isFullscreenMedia || isMinimalUiMedia || isNavigatorStandalone || isUrlPWA || isAndroidApp
+      );
     };
 
-    const alreadyInstalled = checkInstalled();
+    const runningAsApp = checkIsRunningStandalone();
+    setIsInstalled(runningAsApp);
 
     // 3. Detect iOS Safari
     const ua = window.navigator.userAgent.toLowerCase();
@@ -110,18 +114,20 @@ export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const handleAppInstalled = () => {
       setIsInstalled(true);
       setShowInstallModal(false);
-      localStorage.setItem('ntc_pwa_installed', 'true');
       setDeferredPrompt(null);
     };
 
     window.addEventListener('appinstalled', handleAppInstalled);
 
-    // 7. DEFAULT OPEN INSTALL POPUP REQUIREMENT:
-    // ONLY show on Mobile or Tablet devices! Never show on PC / Desktop / Large screen.
-    if (!alreadyInstalled && mobileOrTablet) {
+    // 7. INSTALL POPUP LOGIC:
+    // - If running inside the installed mobile application (standalone): NEVER show popup!
+    // - If on mobile/tablet browser (NOT installed): ALWAYS show install popup screen!
+    if (mobileOrTablet && !runningAsApp) {
+      // Small delay of 1.4s so splash screen animation finishes smoothly first
       const timer = setTimeout(() => {
         setShowInstallModal(true);
-      }, 1400); // 1.4s delay so splash & initial render load smoothly
+      }, 1400);
+
       return () => {
         clearTimeout(timer);
         window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -142,7 +148,6 @@ export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         const choiceResult = await deferredPrompt.userChoice;
         if (choiceResult.outcome === 'accepted') {
           setIsInstalled(true);
-          localStorage.setItem('ntc_pwa_installed', 'true');
           setShowInstallModal(false);
         }
         setDeferredPrompt(null);
