@@ -61,7 +61,15 @@ export default async function DatePage({
   // Generate authentic day summary based on data
   const tithi = dayData.panchangam?.tithi || 'சுப திதி';
   const nakshatra = dayData.panchangam?.nakshatra || 'சுப நட்சத்திரம்';
-  const pirai = dayData.panchangam?.pirai || 'சுப பட்சம்';
+
+  // Format pirai properly from upstream database shorthand:
+  // 'V' = வளர்பிறை (Shukla Paksha / Waxing Moon)
+  // 'T' = தேய்பிறை (Krishna Paksha / Waning Moon)
+  const rawPirai = dayData.panchangam?.pirai || '';
+  const isTheypirai = rawPirai === 'T' || rawPirai.includes('தேய்பிறை');
+  const piraiTa = isTheypirai ? 'தேய்பிறை' : 'வளர்பிறை';
+  const piraiEn = isTheypirai ? 'Waning Moon (Krishna Paksha)' : 'Waxing Moon (Shukla Paksha)';
+
   const nallaMorn = dayData.auspicious_timings?.nalla_neram_morning || '09:15 - 10:15';
   const nallaEve = dayData.auspicious_timings?.nalla_neram_evening || '04:45 - 05:45';
   const soolam = dayData.additional_details?.soolam || 'வடக்கு';
@@ -85,7 +93,7 @@ export default async function DatePage({
           {isTa ? (
             <>
               இன்று <strong>{dayData.tamil_month} மாதம் {dayData.tamil_date}-ம் நாள் ({dayData.tamil_year} ஆண்டு)</strong>.
-              சந்திரனின் சஞ்சாரப்படி <strong>{pirai}</strong> காலமாகும். இன்றைய முதன்மை திதி <strong>{tithi}</strong> மற்றும் நட்சத்திரம் <strong>{nakshatra}</strong> ஆகும்.
+              சந்திரனின் சஞ்சாரப்படி <strong>{piraiTa}</strong> காலமாகும். இன்றைய முதன்மை திதி <strong>{tithi}</strong> மற்றும் நட்சத்திரம் <strong>{nakshatra}</strong> ஆகும்.
               இன்றைய காலை நல்ல நேரம் <strong>{nallaMorn}</strong> மற்றும் மாலை நல்ல நேரம் <strong>{nallaEve}</strong> ஆகும்.
               பயணத்திற்கான சூலம் <strong>{soolam}</strong> திசையில் உள்ளது; அதற்கான பரிகாரம் <strong>{parigaram}</strong>.
               {festivalTitle && (
@@ -97,7 +105,7 @@ export default async function DatePage({
           ) : (
             <>
               Today is <strong>{dayData.tamil_month} {dayData.tamil_date}, {dayData.tamil_year} year</strong>.
-              The day falls under the <strong>{pirai}</strong> phase with prevailing Tithi <strong>{tithi}</strong> and Nakshatra <strong>{nakshatra}</strong>.
+              The day falls under the <strong>{piraiEn}</strong> phase with prevailing Tithi <strong>{tithi}</strong> and Nakshatra <strong>{nakshatra}</strong>.
               Auspicious Nalla Neram intervals are <strong>{nallaMorn}</strong> in the morning and <strong>{nallaEve}</strong> in the evening.
               The travel Soolam direction is <strong>{soolam}</strong> with recommended remedy (Parigaram) being <strong>{parigaram}</strong>.
               {festivalTitle && (
