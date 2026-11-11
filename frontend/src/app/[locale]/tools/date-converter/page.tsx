@@ -32,7 +32,8 @@ export default async function DateConverterPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  const resolvedParams = await params;
+  const locale: Locale = resolvedParams.locale === 'en' ? 'en' : 'ta';
   const isTa = locale === 'ta';
 
   return (

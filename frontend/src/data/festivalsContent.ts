@@ -249,7 +249,7 @@ export const FESTIVALS_DATA: Record<string, FestivalDetail> = {
       {
         questionTa: 'தீபாவளி அன்று எண்ணெய் தேய்த்துக் குளிப்பது ஏன்?',
         answerTa: 'அன்று நல்லெண்ணெயில் மகாலட்சுமியும், வெந்நீரில் கங்காதேவியும் வாசம் செய்வதாகப் புராணம் கூறுகிறது. நரகாசுரனின் பிடியில் இருந்து விடுபட்ட ஆன்மாக்கள் உடற்பிணி நீங்கி புத்துணர்வு பெற இது கடைப்பிடிக்கப்படுகிறது.',
-        answerEn: 'Why is sesame oil bath mandatory on Deepavali?',
+        questionEn: 'Why is sesame oil bath mandatory on Deepavali?',
         answerEn: 'Tradition holds that Goddess Lakshmi resides in sesame oil and Goddess Ganga in hot water on this morning, purifying the body of past afflictions and granting vitality.',
       },
     ],
@@ -453,7 +453,7 @@ export const FESTIVALS_DATA: Record<string, FestivalDetail> = {
       {
         questionTa: 'கொலு படிகள் எப்போதும் ஒற்றைப்படை எண்ணிக்கையில் இருப்பது ஏன்?',
         answerTa: 'இந்து தத்துவத்தில் ஒற்றைப்படை எண்கள் (3, 5, 7, 9) வளர்ச்சியை, ஜீவாத்மாவின் தொடர் பரிணாமத்தைக் குறிக்கின்றன. 9 படிகள் மனிதனின் 9 நிலைகளைக் கடந்து முக்தியடைவதைக் குறிப்பதாகும்.',
-        answerEn: 'Why are Golu steps always odd-numbered?',
+        questionEn: 'Why are Golu steps always odd-numbered?',
         answerEn: 'In Vedic philosophy, odd numbers (3, 5, 7, 9) represent perpetual growth and evolution of consciousness, with nine steps symbolizing transcendence over mortal limitations.',
       },
     ],
@@ -521,7 +521,7 @@ export const FESTIVALS_DATA: Record<string, FestivalDetail> = {
       {
         questionTa: 'ஆடிப்பெருக்கில் தாலி பிரித்துக் கோர்ப்பது ஏன்?',
         answerTa: 'புதுமணப் பெண்கள் தங்கள் திருமணத்தின் போது கட்டிய மஞ்சள் கயிற்றை புதிய மங்களகரமான மஞ்சள் கயிற்றாக மாற்றி, கணவனின் ஆயுளும் இல்லறமும் சிறக்க காவிரி அன்னையின் ஆசியைப் பெறும் புனிதம் இதுவாகும்.',
-        answerEn: 'Why do newlywed women renew their Mangalsutra cord on Aadi Perukku?',
+        questionEn: 'Why do newlywed women renew their Mangalsutra cord on Aadi Perukku?',
         answerEn: 'It is a sacred renewal ritual where women replace the wedding turmeric thread with a fresh blessed cord, praying to Goddess Kaveri for the health and longevity of their husbands.',
       },
     ],
@@ -589,7 +589,7 @@ export const FESTIVALS_DATA: Record<string, FestivalDetail> = {
       {
         questionTa: 'தைப்பூசத்தன்று வேல் வழிபாடு ஏன் முதன்மையானது?',
         answerTa: 'வேல் என்பது வெறும் ஆயுதம் அல்ல; அது ஆன்மாவின் அறியாமையை வேரறுக்கும் "ஞானசக்தி" ஆகும். பார்வதி தேவி தன் ஆற்றலை வேலாகத் தந்ததால் தைப்பூசத்தில் வேலுக்கு விசேஷ அபிஷேகம் செய்யப்படுகிறது.',
-        answerEn: 'Why is the Vel revered on Thai Poosam?',
+        questionEn: 'Why is the Vel revered on Thai Poosam?',
         answerEn: 'The Vel represents the sharp, broad, and penetrating intellect of divine wisdom (Gnana Sakthi) gifted by Mother Parvati to eradicate the darkness of ego and illusion.',
       },
     ],
