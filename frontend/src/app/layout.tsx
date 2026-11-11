@@ -1,9 +1,17 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
+import { Noto_Sans_Tamil } from 'next/font/google';
 import { PWAProvider } from '@/components/pwa/PWAContext';
 import { SplashScreen } from '@/components/pwa/SplashScreen';
 import { InstallModal } from '@/components/pwa/InstallModal';
 import './globals.css';
+
+const notoSansTamil = Noto_Sans_Tamil({
+  subsets: ['tamil'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  display: 'swap',
+  variable: '--font-noto-tamil',
+});
 
 export const viewport: Viewport = {
   themeColor: '#8B1515',
@@ -122,7 +130,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className="antialiased selection:bg-[#70263B] selection:text-white">
+      <body className={`antialiased selection:bg-[#70263B] selection:text-white ${notoSansTamil.variable} ${notoSansTamil.className}`}>
         <PWAProvider>
           <SplashScreen />
           <InstallModal />
@@ -132,4 +140,3 @@ export default function RootLayout({
     </html>
   );
 }
-

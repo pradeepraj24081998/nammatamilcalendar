@@ -5,7 +5,8 @@ import { AdContainer } from '@/components/ui/AdContainer';
 import { Locale } from '@/lib/types';
 import { getDictionary } from '@/lib/i18n';
 import { TempleBellIcon, AgalVilakkuIcon, AuspiciousSunIcon } from '@/components/ui/CalendarIcons';
-import { Sparkles, Calendar, ArrowRight, Moon, Sun, Flame, Landmark, ShieldAlert, Star } from 'lucide-react';
+import { Sparkles, Calendar, ArrowRight, Moon, Sun, Flame, Landmark, ShieldAlert, Star, BookOpen } from 'lucide-react';
+import { FESTIVALS_DATA } from '@/data/festivalsContent';
 import type { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -34,14 +35,16 @@ export async function generateMetadata({
   const selectedTitle = categoryTitles[category] || categoryTitles.all;
 
   return {
-    title: isEn
-      ? `${selectedTitle.en} | Namma Tamil Calendar`
-      : `${selectedTitle.ta} | நம்ம தமிழ் காலண்டர்`,
+    title: isEn ? selectedTitle.en : selectedTitle.ta,
     description: isEn
       ? `Complete list of ${selectedTitle.en} with Tamil month, Tithi, Nakshatra, and auspicious timings.`
       : `${selectedTitle.ta} முழு பட்டியல், தமிழ் மாதம், தேதி, திதி, நட்சத்திரம் மற்றும் விசேஷ குறிப்புகள்.`,
     alternates: {
       canonical: `https://nammatamilcalendar.in/${locale}/festivals`,
+      languages: {
+        ta: 'https://nammatamilcalendar.in/ta/festivals',
+        en: 'https://nammatamilcalendar.in/en/festivals',
+      },
     },
   };
 }
@@ -137,8 +140,10 @@ export default async function FestivalsPage({
     },
   ];
 
+  const featuredFestivals = Object.values(FESTIVALS_DATA);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       
       {/* 1. Header Banner */}
       <div className="bg-gradient-to-r from-[#700C0C] via-[#8B1515] to-[#700C0C] text-white p-5 sm:p-8 rounded-3xl shadow-xl border-b-4 border-[#FFD700]">
@@ -207,6 +212,44 @@ export default async function FestivalsPage({
           </div>
         </div>
       </div>
+
+      {/* 2. Featured In-Depth Festival Guides Strip */}
+      <section aria-labelledby="featured-guides-heading" className="bg-[#FFF9F0] border-2 border-[#D4AF37] p-5 sm:p-6 rounded-3xl shadow-xs space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2 text-[#8B1515]">
+            <BookOpen className="w-5 h-5 text-[#8B1515]" />
+            <h2 id="featured-guides-heading" className="text-base sm:text-lg font-black">
+              {isTa ? 'சிறப்பு பண்டிகை வழிகாட்டி கட்டுரைகள்' : 'In-Depth Tamil Festival Guides & Rituals'}
+            </h2>
+          </div>
+          <span className="text-xs font-bold text-[#8B1515] bg-white px-2.5 py-1 rounded-full border border-[#D4AF37]">
+            {isTa ? 'வரலாறு & வழிபாட்டு முறைகள்' : 'Heritage & Rituals'}
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {featuredFestivals.map((fest) => (
+            <Link
+              key={fest.slug}
+              href={`/${locale}/festivals/${fest.slug}`}
+              className="p-3.5 rounded-2xl bg-white border border-[#EBDCCF] hover:border-[#8B1515] hover:shadow-md transition-all flex flex-col justify-between group"
+            >
+              <div>
+                <span className="text-xs font-black text-[#8B1515] group-hover:text-[#C93B2B] block">
+                  {isTa ? fest.nameTa : fest.nameEn}
+                </span>
+                <span className="text-[11px] text-[#5C5256] mt-1 block line-clamp-2">
+                  {isTa ? fest.subtitleTa : fest.subtitleEn}
+                </span>
+              </div>
+              <div className="mt-3 pt-2 border-t border-[#EBDCCF]/60 flex items-center justify-between text-[11px] font-bold text-[#D4AF37]">
+                <span>{isTa ? 'முழு விபரம் வாசிக்க' : 'Read Guide'}</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       {/* 3. Selected Category Header & Count Summary */}
       <div className="flex items-center justify-between px-1">

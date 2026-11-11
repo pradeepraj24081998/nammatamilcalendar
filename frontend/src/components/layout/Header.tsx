@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Calendar, Menu, X, Sparkles, Clock, Compass, Heart, PhoneCall, Download } from 'lucide-react';
+import { Calendar, Menu, X, Sparkles, Clock, Compass, Heart, PhoneCall, Download, BookOpen, Wrench, ShieldAlert } from 'lucide-react';
 import { Locale } from '@/lib/types';
 import { getDictionary } from '@/lib/i18n';
 import { LanguageToggle } from '../ui/LanguageToggle';
@@ -29,14 +29,15 @@ export const Header: React.FC<HeaderProps> = ({ locale }) => {
   const activeYear = is2027 ? 2027 : istDate.year;
   const currentMonth = istDate.month;
 
-  // Clean navigation links (Feedback tab removed as Contact Us handles all inquiries)
+  // Primary navigation links
   const navLinks = [
     { href: `/${locale}`, label: isTa ? 'முகப்பு' : 'Home', icon: Calendar },
-    { href: `/${locale}/calendar/month/${activeYear}/${currentMonth}`, label: isTa ? 'மாத காலண்டர்' : 'Monthly', icon: Compass },
-    { href: `/${locale}/calendar/year/${activeYear}`, label: isTa ? 'வருட காலண்டர்' : 'Yearly', icon: Clock },
+    { href: `/${locale}/calendar/month/${activeYear}/${currentMonth}`, label: isTa ? 'மாதம்' : 'Monthly', icon: Compass },
     { href: `/${locale}/festivals?year=${activeYear}`, label: isTa ? 'பண்டிகைகள்' : 'Festivals', icon: Sparkles },
     { href: `/${locale}/muhurtham-dates?year=${activeYear}`, label: isTa ? 'முகூர்த்தம்' : 'Muhurtham', icon: Heart },
-    { href: `/${locale}/contact`, label: isTa ? 'தொடர்புக்கு' : 'Contact Us', icon: PhoneCall },
+    { href: `/${locale}/learn`, label: isTa ? 'வழிகாட்டி' : 'Guides', icon: BookOpen },
+    { href: `/${locale}/tools`, label: isTa ? 'கருவிகள்' : 'Tools', icon: Wrench },
+    { href: `/${locale}/contact`, label: isTa ? 'தொடர்புக்கு' : 'Contact', icon: PhoneCall },
   ];
 
   return (
@@ -49,7 +50,7 @@ export const Header: React.FC<HeaderProps> = ({ locale }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-18 gap-3">
 
-            {/* Logo & Brand Wordmark - Compact on xl, expansive on 2xl to guarantee ZERO overflow */}
+            {/* Logo & Brand Wordmark */}
             <Link href={`/${locale}`} className="flex items-center space-x-2 sm:space-x-3 group shrink-0">
               <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-xl p-0.5 bg-gradient-to-tr from-[#FFD700] via-[#FFA000] to-[#FF8F00] shadow-md group-hover:scale-105 transition-transform overflow-hidden shrink-0 bg-white">
                 <Image
@@ -66,14 +67,13 @@ export const Header: React.FC<HeaderProps> = ({ locale }) => {
                 <span className="text-base sm:text-xl font-black tracking-tight text-[#FFF8E7] drop-shadow-xs whitespace-nowrap leading-tight">
                   {dict.siteName}
                 </span>
-                {/* Subtitle visible on mobile/tablet (nav collapsed) and on 2xl desktops; hidden on xl to save 130px */}
                 <span className="text-[10px] sm:text-xs text-[#FFD700] font-bold tracking-wide whitespace-nowrap leading-tight mt-0.5 xl:hidden 2xl:block">
                   {isTa ? 'தினசரி தமிழ் காலண்டர் & பஞ்சாங்கம்' : 'Daily Tamil Calendar & Panchangam'}
                 </span>
               </div>
             </Link>
 
-            {/* Right Container: Desktop Nav + Language Toggle + Mobile Hamburger Grouped Together */}
+            {/* Right Container: Desktop Nav + Language Toggle + Mobile Hamburger */}
             <div className="flex items-center space-x-2 xl:space-x-3 shrink-0">
               {/* Desktop Navigation Links */}
               <nav className="hidden xl:flex items-center space-x-1 2xl:space-x-1.5 shrink-0" aria-label="Main Navigation">
@@ -149,9 +149,25 @@ export const Header: React.FC<HeaderProps> = ({ locale }) => {
               </Link>
             );
           })}
+
+          <div className="pt-2 border-t border-white/20 grid grid-cols-2 gap-2 text-xs font-bold text-white/80">
+            <Link
+              href={`/${locale}/about`}
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 rounded-lg hover:bg-white/10"
+            >
+              {isTa ? 'எங்களை பற்றி' : 'About Us'}
+            </Link>
+            <Link
+              href={`/${locale}/disclaimer`}
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 rounded-lg hover:bg-white/10"
+            >
+              {isTa ? 'பொறுப்புத் துறப்பு' : 'Disclaimer'}
+            </Link>
+          </div>
         </div>
       )}
     </header>
   );
 };
-

@@ -31,11 +31,31 @@ export default async function LocaleLayout({
     },
   };
 
+  const organizationJSONLD = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Namma Tamil Calendar',
+    alternateName: 'நம்ம தமிழ் காலண்டர்',
+    url: 'https://nammatamilcalendar.in',
+    logo: 'https://nammatamilcalendar.in/images/calendar_logo.png',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer support',
+      email: 'arangaapradeep@gmail.com',
+      availableLanguage: ['Tamil', 'English'],
+      areaServed: ['IN', 'MY', 'SG', 'LK', 'AE', 'US', 'GB'],
+    },
+  };
+
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden max-w-full relative">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrgJSONLD) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJSONLD) }}
       />
       <Header locale={locale} />
       <main className="flex-1 max-w-6xl w-full mx-auto px-2.5 xs:px-3 sm:px-6 lg:px-8 py-4 sm:py-8 overflow-x-hidden pb-24 xl:pb-8">

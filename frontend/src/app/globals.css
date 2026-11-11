@@ -32,7 +32,7 @@ body {
   max-width: 100vw;
   background-color: #FFFBF5 !important;
   color: #1F1517 !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Tamil', sans-serif;
+  font-family: var(--font-noto-tamil), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Tamil', sans-serif;
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -47,7 +47,6 @@ body {
   overflow: hidden;
   position: relative;
 }
-
 
 /* Agal Vilakku Oil Lamp Flame Animation */
 @keyframes flameFlicker {
@@ -101,21 +100,6 @@ body {
   }
 }
 
-@keyframes progress {
-  0% {
-    width: 10%;
-    transform: translateX(0%);
-  }
-  50% {
-    width: 75%;
-    transform: translateX(25%);
-  }
-  100% {
-    width: 100%;
-    transform: translateX(0%);
-  }
-}
-
 /* Mobile Safe Area Insets for Edge-to-Edge display */
 @supports (padding: max(0px)) {
   body {
@@ -124,3 +108,18 @@ body {
   }
 }
 
+/* Print Styles for Clean Downloadable / Paper Printing */
+@media print {
+  header, footer, nav, .ad-container, #mobile-bottom-navigation {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .calendar-sheet {
+    box-shadow: none !important;
+    border: 1px solid #333333 !important;
+    page-break-inside: avoid;
+  }
+}
